@@ -1,0 +1,18 @@
+# Zabezpieczenia (Kluczowe dla Web3 i OpSec!)
+.env
+.env.save
+Prywatne/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Foundry / Solidity
+smart_contracts/out/
+smart_contracts/cache/
+smart_contracts/lib/
+
+# Pliki tymczasowe edytorów
+*.kate-swp
+*.swp

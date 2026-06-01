@@ -30,6 +30,7 @@ contract RoutingLayer {
     constructor(address _trustLayer, address _token, address _treasury) {
         trustLayer = TrustLayer(_trustLayer);
         paymentToken = IERC20(_token);
+        require(_treasury != address(0), "Invalid treasury");
         treasury = _treasury;
     }
 

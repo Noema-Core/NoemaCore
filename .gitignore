@@ -1,18 +1,61 @@
-# Zabezpieczenia (Kluczowe dla Web3 i OpSec!)
+# NoemaCore .gitignore
+# Environment & Secrets
 .env
-.env.save
-Prywatne/
+*.env.local
+*.env.*.local
+PRIVATE_KEY
+*.key
+*.pem
 
 # Python
-venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.pytest_cache/
 
-# Foundry / Solidity
-smart_contracts/out/
-smart_contracts/cache/
-smart_contracts/lib/
+# Foundry / Forge
+cache/
+broadcast/
+out/
+*.t.sol
+*.s.sol
 
-# Pliki tymczasowe edytorów
-*.kate-swp
+# Node / npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / Editor
+.DS_Store
 *.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.log
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Sensitive
+secrets.json
+deploy-config.json
+

@@ -1,0 +1,30 @@
+name: Foundry Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  FOUNDRY_PROFILE: ci
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      - name: Run forge build
+        run: forge build
+
+      - name: Run forge test
+        run: forge test -vvv
+
+      - name: Check gas snapshots
+        run: forge snapshot --check

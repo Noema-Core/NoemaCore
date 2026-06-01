@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Noema Sandbox — Dashboard PoC</title>
+  <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+  <style>
+    body { font-family: monospace; max-width: 800px; margin: 2rem auto; padding: 0 1rem; background: #0d1117; color: #e6edf3; }
+    .card { border: 1px solid #30363d; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #161b22; }
+    .status { color: #3fb950; font-weight: bold; }
+    .error { color: #f85149; }
+    input, button { padding: 0.5rem; margin: 0.25rem 0; width: 100%; box-sizing: border-box; background: #0d1117; color: #e6edf3; border: 1px solid #30363d; border-radius: 4px; }
+    button { background: #238636; cursor: pointer; }
+    button:hover { background: #2ea043; }
+    pre { background: #0d1117; padding: 0.5rem; border-radius: 4px; overflow-x: auto; color: #8b949e; }
+  </style>
+</head>
+<body>
+  <h1>🧱 Noema Sandbox — Dashboard PoC</h1>
+  
+  <div class="card">
+    <h3>🔗 Połączenie z siecią</h3>
+    <button id="connectBtn">Połącz portfel (MetaMask)</button>
+    <div id="networkStatus" class="status">Niepołączony</div>
+  </div>
+
+  <div class="card">
+    <h3>📋 Zgłoś zadanie do SandboxRouter</h3>
+    <input id="providerAddr" placeholder="Adres providera (0x...)">
+    <input id="taskHash" placeholder="taskHash (keccak256 kodu)">
+    <input id="reward" placeholder="Nagroda (wei, np. 1000000000000000000)">
+    <input id="timeout" placeholder="Timeout (sekundy, np. 3600)" value="3600">
+    <button id="requestBtn">Wyślij requestExecution()</button>
+    <pre id="requestResult"></pre>
+  </div>
+
+  <div class="card">
+    <h3>📜 Wyślij attestation</h3>
+    <input id="execId" placeholder="executionId (0x...)">
+    <input id="attestationHash" placeholder="attestation_hash (0x...)">
+    <button id="submitBtn">Wyślij submitAttestation()</button>
+    <pre id="submitResult"></pre>
+  </div>
+
+  <script>
+    const CONFIG = {
+      RPC_URL: "https://sepolia.base.org",
+      ROUTER_ADDRESS: "0xYourRouterAddressHere",
+      ROUTER_ABI: [{
+        "inputs": [{"name":"_provider","type":"address"},{"name":"_taskHash","type":"bytes32"},{"name":"_reward","type":"uint256"},{"name":"_timeout","type":"uint256"}],
+        "name":"requestExecution","outputs":[{"name":"","type":"bytes32"}],"stateMutability":"nonpayable","type":"function"
+      },{
+        "inputs": [{"name":"_executionId","type":"bytes32"},{"name":"_attestationHash","type":"bytes32"}],
+        "name":"submitAttestation","outputs":[],"stateMutability":"nonpayable","type":"function"
+      }]
+    };
+
+    let provider, signer, router;
+
+    document.getElementById('connectBtn').onclick = async () => {
+      if (window.ethereum) {
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        signer = provider.getSigner();
+        const network = await provider.getNetwork();
+        document.getElementById('networkStatus').textContent = `✅ Połączono: ${network.name} (chainId: ${network.chainId})`;
+        router = new ethers.Contract(CONFIG.ROUTER_ADDRESS, CONFIG.ROUTER_ABI, signer);
+      } else {
+        document.getElementById('networkStatus').textContent = "❌ MetaMask nie wykryty";
+        document.getElementById('networkStatus').className = "error";
+      }
+    };
+
+    document.getElementById('requestBtn').onclick = async () => {
+      if (!router) return alert("Najpierw połącz portfel!");
+      try {
+        const tx = await router.requestExecution(
+          document.getElementById('providerAddr').value,
+          document.getElementById('taskHash').value,
+          ethers.BigNumber.from(document.getElementById('reward').value),
+          parseInt(document.getElementById('timeout').value)
+        );
+        const receipt = await tx.wait();
+        document.getElementById('requestResult').textContent = `✅ Tx: ${receipt.transactionHash}\n🔍 executionId: ${receipt.events?.[0]?.args?.executionId || "sprawdź logs"}`;
+      } catch (e) {
+        document.getElementById('requestResult').textContent = `❌ Błąd: ${e.message}`;
+        document.getElementById('requestResult').className = "error";
+      }
+    };
+
+    document.getElementById('submitBtn').onclick = async () => {
+      if (!router) return alert("Najpierw połącz portfel!");
+      try {
+        const tx = await router.submitAttestation(
+          document.getElementById('execId').value,
+          document.getElementById('attestationHash').value
+        );
+        const receipt = await tx.wait();
+        document.getElementById('submitResult').textContent = `✅ Attestation submitted!\n🔗 Tx: ${receipt.transactionHash}`;
+      } catch (e) {
+        document.getElementById('submitResult').textContent = `❌ Błąd: ${e.message}`;
+        document.getElementById('submitResult').className = "error";
+      }
+    };
+  </script>
+</body>
+</html>

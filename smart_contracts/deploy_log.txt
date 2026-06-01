@@ -1,0 +1,32 @@
+No files changed, compilation skipped
+Script ran successfully.
+
+== Logs ==
+  NoemaToken deployed at: 0x851356ae760d987E095750cCeb3bC6014560891C
+  TrustLayer deployed at: 0xf5059a5D33d5853360D16C683c16e67980206f36
+  EscrowLayer deployed at: 0x95401dc811bb5740090279Ba06cfA8fcF6113778
+  RoutingLayer deployed at: 0x998abeb3E57409262aE5b751f60747921B33613E
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 31337
+
+Estimated gas price: 1.01895635 gwei
+
+Estimated total gas used for script: 7301552
+
+Estimated amount required: 0.0074399627752552 ETH
+
+==========================
+
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+
+Transactions saved to: /home/ja/Projekt Krypto AI/smart_contracts/broadcast/Deploy.s.sol/31337/run-latest.json
+
+Sensitive values saved to: /home/ja/Projekt Krypto AI/smart_contracts/cache/Deploy.s.sol/31337/run-latest.json
+

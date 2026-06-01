@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noema Core | Trustless Settlement for Autonomous AI Agents</title>
+  <meta name="description" content="Noema Core is an EVM protocol for autonomous AI agent settlement: escrow, reputation, state channels, and provider-consumer routing." />
+  <style>
+    :root{
+      --bg:#05070d;
+      --bg2:#080d18;
+      --panel:rgba(255,255,255,.055);
+      --panel2:rgba(255,255,255,.085);
+      --line:rgba(255,255,255,.13);
+      --text:#eef6ff;
+      --muted:#9fb0c7;
+      --faint:#6f8099;
+      --cyan:#38e8ff;
+      --blue:#6c7cff;
+      --violet:#b16cff;
+      --green:#36f5a2;
+      --amber:#ffd166;
+      --danger:#ff5e7a;
+      --shadow:0 28px 90px rgba(0,0,0,.48);
+      --glow:0 0 48px rgba(56,232,255,.18), 0 0 90px rgba(108,124,255,.11);
+      --r:26px;
+      --max:1200px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      min-height:100vh;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 15% -5%, rgba(56,232,255,.20), transparent 33%),
+        radial-gradient(circle at 85% 0%, rgba(177,108,255,.19), transparent 31%),
+        radial-gradient(circle at 50% 105%, rgba(54,245,162,.10), transparent 35%),
+        linear-gradient(180deg,var(--bg),var(--bg2) 48%,#04060b);
+      line-height:1.65;
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";position:fixed;inset:0;z-index:-2;opacity:.42;
+      background-image:linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+      background-size:58px 58px;
+      mask-image:linear-gradient(to bottom, #000 0%, transparent 86%);
+    }
+    body:after{
+      content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+      background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px);
+      mix-blend-mode:screen;
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(var(--max),calc(100% - 44px));margin-inline:auto}
+    .noise-orb{position:fixed;width:560px;height:560px;border-radius:999px;filter:blur(80px);opacity:.14;z-index:-1;animation:drift 12s ease-in-out infinite alternate}
+    .orb-a{left:-160px;top:120px;background:var(--cyan)}.orb-b{right:-180px;top:520px;background:var(--violet);animation-delay:-3s}.orb-c{left:28%;bottom:-260px;background:var(--blue);animation-delay:-7s}
+    @keyframes drift{to{transform:translate(46px,-28px) scale(1.08)}}
+    header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:rgba(5,7,13,.70);backdrop-filter:blur(22px)}
+    nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:820;letter-spacing:-.04em;font-size:1.25rem}
+    .mark{width:38px;height:38px;border-radius:13px;background:conic-gradient(from 210deg,var(--cyan),var(--blue),var(--violet),var(--cyan));box-shadow:var(--glow);position:relative}
+    .mark:after{content:"";position:absolute;inset:9px;border-radius:8px;background:#07101d;border:1px solid rgba(255,255,255,.22)}
+    .navlinks{display:flex;align-items:center;gap:22px;color:var(--muted);font-size:.94rem;font-weight:650}
+    .navlinks a:hover{color:var(--text)}
+    .nav-cta{padding:10px 15px;border:1px solid rgba(56,232,255,.32);border-radius:999px;color:#dffcff;background:rgba(56,232,255,.07)}
+    .hero{padding:86px 0 42px;position:relative}
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:46px;align-items:center}
+    .kicker{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid rgba(56,232,255,.22);border-radius:999px;background:rgba(56,232,255,.06);color:#c8fbff;font-weight:700;font-size:.86rem;margin-bottom:22px}
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--green);box-shadow:0 0 18px var(--green)}
+    h1{font-size:clamp(3rem,7vw,6.75rem);line-height:.94;letter-spacing:-.075em;margin-bottom:24px}
+    .grad{background:linear-gradient(90deg,#fff,var(--cyan) 45%,#d8c6ff 85%);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{font-size:clamp(1.08rem,2vw,1.28rem);color:var(--muted);max-width:710px;margin-bottom:32px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:34px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;border-radius:14px;border:1px solid var(--line);font-weight:800;transition:.25s ease;white-space:nowrap}
+    .btn.primary{background:linear-gradient(135deg,var(--cyan),var(--blue));color:#03101c;box-shadow:0 15px 44px rgba(56,232,255,.22)}
+    .btn.secondary{background:rgba(255,255,255,.055);color:var(--text)}
+    .btn:hover{transform:translateY(-2px);filter:saturate(1.2)}
+    .proof-row{display:flex;flex-wrap:wrap;gap:10px;color:var(--faint);font-size:.88rem}
+    .pill{border:1px solid var(--line);background:rgba(255,255,255,.045);padding:8px 11px;border-radius:999px}
+    .console{border:1px solid rgba(255,255,255,.16);background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.035));border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;position:relative}
+    .console:before{content:"";position:absolute;inset:-1px;background:radial-gradient(circle at 60% 0%,rgba(56,232,255,.24),transparent 42%);pointer-events:none}
+    .console-top{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--line);color:var(--muted);font-size:.83rem}
+    .lights{display:flex;gap:8px}.lights span{width:10px;height:10px;border-radius:999px;background:var(--danger)}.lights span:nth-child(2){background:var(--amber)}.lights span:nth-child(3){background:var(--green)}
+    .flow{padding:24px;display:grid;gap:14px;position:relative}
+    .node{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--line);border-radius:18px;background:rgba(0,0,0,.22)}
+    .node b{display:block}.node span{display:block;color:var(--muted);font-size:.9rem;line-height:1.35}.icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:rgba(56,232,255,.10);border:1px solid rgba(56,232,255,.20)}
+    .settle{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center}.arrow{color:var(--cyan);font-size:1.8rem}
+    section{padding:82px 0}.section-head{max-width:790px;margin:0 auto 42px;text-align:center}.eyebrow{color:var(--cyan);font-weight:850;text-transform:uppercase;letter-spacing:.16em;font-size:.76rem;margin-bottom:10px}.section-head h2{font-size:clamp(2rem,4vw,3.7rem);letter-spacing:-.055em;line-height:1.02;margin-bottom:16px}.section-head p{color:var(--muted);font-size:1.05rem}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:25px;box-shadow:0 20px 60px rgba(0,0,0,.18);position:relative;overflow:hidden}.card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 0%,rgba(56,232,255,.11),transparent 42%);opacity:0;transition:.25s}.card:hover:before{opacity:1}.card h3{font-size:1.22rem;margin:14px 0 9px}.card p{color:var(--muted);font-size:.96rem}.card .num{font-size:.78rem;color:var(--cyan);font-weight:850;letter-spacing:.12em}
+    .split{display:grid;grid-template-columns:.86fr 1.14fr;gap:24px;align-items:stretch}.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:30px}.panel h2{font-size:2rem;letter-spacing:-.04em;line-height:1.1;margin-bottom:16px}.panel p,.panel li{color:var(--muted)}.panel ul{margin-left:18px;margin-top:14px}.panel li{margin-bottom:10px}
+    .stack{display:grid;gap:13px}.layer{display:grid;grid-template-columns:70px 1fr auto;gap:16px;align-items:center;padding:17px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.045)}.layer strong{display:block;font-size:1.03rem}.layer small{display:block;color:var(--muted);margin-top:2px}.tag{font-size:.74rem;color:#07101d;background:var(--cyan);padding:5px 9px;border-radius:999px;font-weight:900}
+    .demo-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--line)}.metric{background:rgba(255,255,255,.055);padding:24px}.metric b{font-size:2rem;line-height:1;color:var(--text)}.metric span{display:block;color:var(--muted);font-size:.9rem;margin-top:8px}
+    .warning{border:1px solid rgba(255,209,102,.28);background:rgba(255,209,102,.07);border-radius:var(--r);padding:24px;color:#ffe8a6}.warning strong{color:#fff}
+    .road{position:relative;display:grid;gap:16px}.milestone{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:20px;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.045)}.milestone .date{color:var(--cyan);font-weight:850}.milestone p{color:var(--muted)}
+    .token-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.alloc{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.alloc div{padding:20px;border-radius:20px;background:rgba(0,0,0,.22);border:1px solid var(--line)}.alloc b{font-size:2.2rem;color:var(--cyan);display:block}.alloc span{color:var(--muted)}
+    .cta{padding:54px;border-radius:34px;border:1px solid rgba(56,232,255,.22);background:linear-gradient(135deg,rgba(56,232,255,.13),rgba(177,108,255,.10) 48%,rgba(255,255,255,.04));text-align:center;box-shadow:var(--glow)}.cta h2{font-size:clamp(2rem,4vw,4rem);letter-spacing:-.055em;line-height:1.03;margin-bottom:15px}.cta p{color:var(--muted);max-width:700px;margin:0 auto 26px}
+    footer{padding:42px 0 54px;color:var(--faint);border-top:1px solid var(--line)}.foot{display:flex;justify-content:space-between;gap:22px;flex-wrap:wrap}.foot a{color:var(--muted);margin-left:18px}.foot a:hover{color:var(--cyan)}
+    .reveal{opacity:0;transform:translateY(24px);transition:.75s cubic-bezier(.2,.8,.2,1)}.reveal.show{opacity:1;transform:none}
+    @media(max-width:930px){.hero-grid,.split,.token-grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.demo-strip{grid-template-columns:repeat(2,1fr)}.navlinks{display:none}.hero{padding-top:58px}.settle{grid-template-columns:1fr}.arrow{transform:rotate(90deg);justify-self:center}.layer{grid-template-columns:54px 1fr}.tag{display:none}}
+    @media(max-width:560px){.wrap{width:min(100% - 28px,var(--max))}.demo-strip,.alloc{grid-template-columns:1fr}.milestone{grid-template-columns:1fr}.cta{padding:34px 20px}.hero-actions .btn{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="noise-orb orb-a"></div><div class="noise-orb orb-b"></div><div class="noise-orb orb-c"></div>
+  <header>
+    <div class="wrap"><nav>
+      <a class="brand" href="#top"><span class="mark"></span><span>Noema Core</span></a>
+      <div class="navlinks">
+        <a href="#problem">Problem</a><a href="#protocol">Protocol</a><a href="#demo">Demo</a><a href="#token">Token</a><a href="#roadmap">Roadmap</a><a href="https://x.com/Noema_Core" target="_blank" rel="noreferrer">X</a><a class="nav-cta" href="#demo">Testnet first</a>
+      </div>
+    </nav></div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="reveal">
+          <div class="kicker"><span class="dot"></span> Working local prototype • Foundry tested • Testnet demo next</div>
+          <h1>Trustless settlement for <span class="grad">autonomous AI agents.</span></h1>
+          <p class="lead">Noema Core is an EVM protocol where AI agents can discover providers, lock funds in escrow, consume compute off-chain, and settle usage on-chain with reputation and slashing.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#demo">View demo flow →</a>
+            <a class="btn secondary" href="#protocol">Explore protocol</a>
+            <a class="btn secondary" href="mailto:noema.core@proton.me">Contact</a>
+          </div>
+          <div class="proof-row">
+            <span class="pill">Solidity + Foundry</span><span class="pill">Python SDK</span><span class="pill">FastAPI Gateway</span><span class="pill">OpenTimestamps IP proof</span>
+          </div>
+        </div>
+        <div class="console reveal">
+          <div class="console-top"><div class="lights"><span></span><span></span><span></span></div><span>agent-settlement.local</span></div>
+          <div class="flow">
+            <div class="node"><div class="icon">🤖</div><div><b>Consumer Agent</b><span>requests inference, opens escrow, signs usage frames</span></div></div>
+            <div class="settle"><div class="node"><div class="icon">🔒</div><div><b>Escrow</b><span>$NOEMA locked before work starts</span></div></div><div class="arrow">⇄</div><div class="node"><div class="icon">⚡</div><div><b>State Channel</b><span>thousands of off-chain API events</span></div></div></div>
+            <div class="node"><div class="icon">🧠</div><div><b>Provider Agent</b><span>serves compute, receives settlement, builds reputation</span></div></div>
+            <div class="node"><div class="icon">⚖️</div><div><b>On-chain Resolution</b><span>settle, refund, fee, reputation update, or slash</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="problem">
+      <div class="wrap">
+        <div class="section-head reveal"><div class="eyebrow">Why this exists</div><h2>AI agents are becoming economic actors. Their payments are still Web2.</h2><p>Centralized billing, manual accounts, opaque provider trust and API limits do not scale to machine-to-machine markets. Noema focuses on the missing neutral settlement layer.</p></div>
+        <div class="cards">
+          <article class="card reveal"><span class="num">01</span><h3>API capacity is fragmented</h3><p>Some users and providers have unused capacity while others hit hard limits. Markets need routing, accounting and settlement.</p></article>
+          <article class="card reveal"><span class="num">02</span><h3>Trust is not portable</h3><p>Provider reliability should not live inside one centralized platform. Stake-backed reputation makes trust verifiable and transferable.</p></article>
+          <article class="card reveal"><span class="num">03</span><h3>Gas kills micro-usage</h3><p>AI calls can be tiny, frequent and continuous. State channels keep execution fast while preserving on-chain finality.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="protocol">
+      <div class="wrap split">
+        <div class="panel reveal"><div class="eyebrow">Protocol, not app</div><h2>Four-layer architecture for agent commerce.</h2><p>Noema should be presented as infrastructure first: contracts, SDK and gateway, with clear boundaries between on-chain guarantees and off-chain execution.</p><ul><li>On-chain: escrow, staking, reputation, slashing, settlement.</li><li>Off-chain: routing, metrics, API execution, signed usage.</li><li>Developer layer: Python SDK and demo scripts.</li></ul></div>
+        <div class="stack reveal">
+          <div class="layer"><div class="icon">🪙</div><div><strong>Token Layer</strong><small>Fixed-supply $NOEMA used for staking, collateral, fee accounting and settlement.</small></div><span class="tag">EVM</span></div>
+          <div class="layer"><div class="icon">🔒</div><div><strong>Escrow Layer</strong><small>Locks funds before work begins; supports release, refund and dispute-related paths.</small></div><span class="tag">SAFE</span></div>
+          <div class="layer"><div class="icon">🛡️</div><div><strong>Trust & Slashing Layer</strong><small>Stake-backed provider accountability for objective SLA failures: timeout, availability and signed metrics.</small></div><span class="tag">STAKE</span></div>
+          <div class="layer"><div class="icon">⚡</div><div><strong>Routing & Channels</strong><small>Off-chain usage frames aggregate many API events into one final settlement.</small></div><span class="tag">SCALE</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo">
+      <div class="wrap">
+        <div class="section-head reveal"><div class="eyebrow">Public proof over promises</div><h2>The website should sell the demo, not the dream.</h2><p>The strongest message is simple: a local prototype exists, contracts pass Foundry tests, and the next milestone is a public Sepolia deployment with visible transaction hashes.</p></div>
+        <div class="demo-strip reveal">
+          <div class="metric"><b>1B</b><span>$NOEMA fixed supply created</span></div>
+          <div class="metric"><b>4</b><span>core contract layers</span></div>
+          <div class="metric"><b>2%</b><span>protocol fee target</span></div>
+          <div class="metric"><b>0</b><span>mainnet promises before audit</span></div>
+        </div>
+        <div style="height:20px"></div>
+        <div class="warning reveal"><strong>Recommended public positioning:</strong> keep the token visible, but avoid investment-style language until audit, liquidity and legal review. Use “testnet demo”, “developer preview”, “protocol utility” and “open infrastructure” instead of APY or price-demand claims.</div>
+      </div>
+    </section>
+
+    <section id="token">
+      <div class="wrap token-grid">
+        <div class="panel reveal"><div class="eyebrow">$NOEMA utility</div><h2>Token narrative should be technical and necessary.</h2><p>The page should clearly answer: why not stablecoins? why native collateral? why stake? The cleanest answer is: $NOEMA is the internal collateral and settlement unit that binds provider access, reputation risk, protocol fees and dispute penalties into one mechanism.</p></div>
+        <div class="alloc reveal">
+          <div><b>50%</b><span>DEX liquidity</span></div><div><b>30%</b><span>Ecosystem treasury</span></div><div><b>15%</b><span>Core team vested</span></div><div><b>5%</b><span>Developer grants</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="roadmap">
+      <div class="wrap">
+        <div class="section-head reveal"><div class="eyebrow">Credible launch path</div><h2>Make the roadmap conservative, verifiable and developer-first.</h2></div>
+        <div class="road">
+          <div class="milestone reveal"><div class="date">Phase 01</div><div><h3>Sepolia deployment</h3><p>Deploy Token, Escrow, Reputation and Routing contracts. Publish addresses, transaction hashes and short demo video.</p></div></div>
+          <div class="milestone reveal"><div class="date">Phase 02</div><div><h3>GitHub + documentation</h3><p>Open README, contract interfaces, SDK example, local anvil script and testnet walkthrough.</p></div></div>
+          <div class="milestone reveal"><div class="date">Phase 03</div><div><h3>Security review</h3><p>Run Slither, Foundry invariant tests and external review before any mainnet liquidity or public token campaign.</p></div></div>
+          <div class="milestone reveal"><div class="date">Phase 04</div><div><h3>Provider sandbox</h3><p>Invite early developers to run mock providers and consumers, stress-test routing and validate settlement UX.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap"><div class="cta reveal"><h2>Built for agents. Proven by transactions.</h2><p>Noema Core should communicate confidence without hype: show code, show tests, show hashes, show a working demo. Let the protocol earn trust before the market hears about the token.</p><div class="hero-actions" style="justify-content:center;margin:0"><a class="btn primary" href="https://x.com/Noema_Core" target="_blank" rel="noreferrer">Follow development</a><a class="btn secondary" href="mailto:noema.core@proton.me">Contact team</a></div></div></div>
+    </section>
+  </main>
+
+  <footer>
+  <a href="https://github.com/Noema-Core/NoemaCore/blob/main/docs/API.md" target="_blank">API Docs</a> • <a href="https://github.com/Noema-Core/NoemaCore/blob/main/docs/whitepaper.md" target="_blank">Whitepaper</a> • <a href="https://github.com/Noema-Core/NoemaCore/blob/main/docs/SECURITY.md" target="_blank">Security</a><br>
+    <div class="wrap foot"><div><a href="https://github.com/Noema-Core/NoemaCore/blob/main/docs/API.md" target="_blank" style="color:#6c7cff;text-decoration:none;margin-right:8px">API Docs</a>• <a href="https://github.com/Noema-Core/NoemaCore/blob/main/docs/whitepaper.md" target="_blank" style="color:#6c7cff;text-decoration:none;margin:0 8px">Whitepaper</a>• <a href="https://github.com/Noema-Core/NoemaCore/blob/main/docs/SECURITY.md" target="_blank" style="color:#6c7cff;text-decoration:none;margin-left:8px">Security</a><br>© 2026 Noema Core. Autonomous AI settlement infrastructure.</div><div><a href="#problem">Problem</a><a href="#protocol">Protocol</a><a href="#demo">Demo</a><a href="#token">Token</a></div></div>
+  </footer>
+
+  <script>
+    const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')})},{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  </script>
+</body>
+</html>

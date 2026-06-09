@@ -1,17 +1,16 @@
-#  Noema AI — Decentralized AI Task Marketplace
+# 🤖 Noema AI — Decentralized AI Task Marketplace
 
 **One-Click Demo** | Base Sepolia Testnet | Solidity + Foundry + Vanilla JS
 
-Noema AI to prototyp zdecentralizowanej platformy zlecania i weryfikacji zadań AI.  
-Użytkownicy tworzą zadania, dostawcy (agenci AI) wykonują je i przesyłają dowód wykonania (`attestation`), a smart kontrakt automatycznie zwalnia nagrodę w tokenach `$NOEMA`.
+Noema AI is a prototype decentralized platform for outsourcing and verifying AI tasks.  
+Users create tasks, providers (AI agents) execute them and submit proof of execution (`attestation`), and the smart contract automatically releases the reward in `$NOEMA` tokens.
 
-##  Funkcje
+## ✨ Features
 - 🔗 **Multi-wallet support**: MetaMask, Rabby, OKX, Brave, Coinbase, Phantom
-- 🌐 **Auto network switch**: Wykrywanie i przełączanie na Base Sepolia jednym kliknięciem
-- 💰 **Smart balance check**: Blokada demo przy braku ETH + link do faucetu
-- 🛡️ **Security-first**: Ostrzeżenia przed użyciem portfeli z realnymi środkami
-- ⚡ **One-Click Flow**: Create → Execute → Attest → Payout w ~45 sekund
+- 🌐 **Auto network switch**: Detect and switch to Base Sepolia with one click
+- 💰 **Smart balance check**: Block demo when ETH is low + faucet link
+- 🛡️ **Security-first**: Warnings against using wallets with real funds
+- ⚡ **One-Click Flow**: Create → Execute → Attest → Payout in ~45 seconds
 
-## 🏗 Architektura
+## 🏗 Architecture
 
-eof

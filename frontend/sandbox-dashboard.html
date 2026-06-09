@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>🤖 Noema AI - One-Click Demo</title>
@@ -35,16 +35,16 @@
     .btn-switch:hover { background: #d97706; }
     .btn-faucet { background: #10b981; color: white; margin-top: 10px; display: inline-block; width: auto; padding: 8px 16px; text-decoration: none; text-align: center; }
     .btn-faucet:hover { background: #059669; }
-    
-    /* Wybór portfela */
+
+    /* Wallet Selector */
     .wallet-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px; }
     .wallet-btn { display: flex; align-items: center; gap: 12px; background: #334155; color: white; padding: 12px 16px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; text-align: left; }
     .wallet-btn:hover { background: #475569; border-color: #3b82f6; }
     .wallet-icon { width: 32px; height: 32px; border-radius: 6px; }
     .wallet-name { font-weight: 600; font-size: 15px; }
     .wallet-status { margin-left: auto; font-size: 12px; color: #10b981; }
-    
-    /* Ostrzeżenie bezpieczeństwa */
+
+    /* Security Warning */
     .security-warning { background: #450a0a; border: 2px solid #ef4444; border-radius: 8px; padding: 16px; margin: 16px 0; }
     .security-warning h3 { color: #fca5a5; margin: 0 0 8px 0; font-size: 16px; }
     .security-warning ul { margin: 8px 0; padding-left: 20px; color: #fecaca; font-size: 13px; }
@@ -54,79 +54,80 @@
 <body>
   <h1>🤖 Noema AI Demo</h1>
   <p class="subtitle">Base Sepolia • Testnet • Tokens with no market value</p>
-  
-  <div class="network" id="networkStatus">🔌 Wybierz portfel, aby rozpocząć</div>
-  
+
+  <div class="network" id="networkStatus">🔌 Select wallet to start</div>
+
   <div class="card">
-    <!-- Ostrzeżenie bezpieczeństwa -->
+    <!-- Security Warning -->
     <div class="security-warning">
-      <h3>⚠️ SECURITY - READ THIS!</h3>
+      <h3>⚠ SECURITY - READ THIS!</h3>
       <ul>
-        <li><strong>Używaj TYLKO portfela testowego</strong> - NIE podłączaj portfela z prawdziwymi środkami!</li>
-        <li>We recommend creating a new wallet exclusively for testing</li>
+        <li><strong>Use ONLY a test wallet</strong> - DO NOT connect a wallet with real funds!</li>
+        <li>This is a testnet - tokens have no value, ETH for gas is free and has no market value.</li>
+        <li>We recommend creating a new wallet exclusively for testing.</li>
       </ul>
     </div>
-    
-    <h3 style="margin: 20px 0 10px 0; text-align: center;">🔗 Wybierz portfel:</h3>
+
+    <h3 style="margin: 20px 0 10px 0; text-align: center;">🔗 Select Wallet:</h3>
     <div id="walletList" class="wallet-grid">
-      <!-- Tutaj JavaScript wstawi dostępne portfele -->
+      <!-- JS will populate wallets here -->
     </div>
     <div id="noWalletMsg" class="hidden" style="text-align: center; padding: 20px; color: #94a3b8;">
-      ❌ Nie wykryto żadnych portfeli.<br>
-      <small>Zainstaluj <a href="https://metamask.io" target="_blank" style="color: #3b82f6;">MetaMask</a> lub <a href="https://rabby.io" target="_blank" style="color: #3b82f6;">Rabby</a></small>
+      ❌ No wallets detected.<br>
+      <small>Please install <a href="https://metamask.io" target="_blank" style="color: #3b82f6;">MetaMask</a> or <a href="https://rabby.io" target="_blank" style="color: #3b82f6;">Rabby</a></small>
     </div>
-    
-    <!-- Sekcja przełączania sieci -->
+
+    <!-- Network Switch Section -->
     <div id="networkWarning" class="hidden" style="text-align:center; margin-top:15px; border-top:1px solid #334155; padding-top:15px;">
-      <p style="color:#f59e0b; margin:0;">⚠️ Nie jesteś na Base Sepolia!</p>
-      <button id="switchBtn" class="btn-switch">🔄 Przełącz na Base Sepolia</button>
+      <p style="color:#f59e0b; margin:0;">⚠ You are not on Base Sepolia!</p>
+      <button id="switchBtn" class="btn-switch"> Switch to Base Sepolia</button>
     </div>
   </div>
 
   <div class="card hidden" id="demoCard">
     <div class="steps">
-      <div class="step" id="step1">1️⃣ Połącz</div>
-      <div class="step" id="step2">2️⃣ Utwórz</div>
-      <div class="step" id="step3">3️⃣ Zatwierdź</div>
-    </div>
-    
-    <div class="info-box">
-      ℹ️ <strong>Uwaga:</strong> Zatwierdzisz 2 transakcje w portfelu. Koszt to ułamki centa w testnetowym ETH.
-    </div>
-    
-    <!-- Sekcja braku ETH -->
-    <div id="balanceWarning" class="hidden" style="text-align:center; margin-bottom:15px;">
-      <p style="color:#ef4444; margin:0;">⛔ Brak ETH na gaz!</p>
-      <p style="font-size:12px; color:#94a3b8;">Potrzebujesz ~0.001 ETH na Base Sepolia. <strong>Skopiuj swój adres i wklej go na stronie kranika.</strong></p>
-      <a href="#" id="faucetLink" target="_blank" class="btn-faucet">🚰 Otwórz kran z moim adresem</a>
+      <div class="step" id="step1">1️ Connect</div>
+      <div class="step" id="step2">2️ Create</div>
+      <div class="step" id="step3">3️ Attest</div>
     </div>
 
-    <button id="demoBtn" class="btn-demo">🚀 Uruchom Pełne Demo</button>
-    
+    <div class="info-box">
+      ℹ️ <strong>Note:</strong> You will approve 2 transactions. Cost is a fraction of a cent in testnet ETH.
+    </div>
+
+    <!-- Balance Warning -->
+    <div id="balanceWarning" class="hidden" style="text-align:center; margin-bottom:15px;">
+      <p style="color:#ef4444; margin:0;">⛔ No ETH for gas!</p>
+      <p style="font-size:12px; color:#94a3b8;">You need ~0.001 ETH on Base Sepolia.</p>
+      <a href="#" id="faucetLink" target="_blank" class="btn-faucet">🚰 Get free ETH</a>
+    </div>
+
+    <button id="demoBtn" class="btn-demo"> Run Full Demo</button>
+
     <div id="status" class="status hidden"></div>
-    
+
     <div id="results" class="hidden">
       <div class="result-box">
-        <div class="result-label"> Execution ID:</div>
+        <div class="result-label">Execution ID:</div>
         <div class="result-row">
           <div class="result-code" id="execIdDisplay">-</div>
           <button class="copy-btn" onclick="copyToClipboard('execIdDisplay', event)">📋</button>
         </div>
       </div>
-      
+
       <div class="result-box">
-        <div class="result-label">🔗 Tx 1 (Create):</div>
+        <div class="result-label"> Tx 1 (Create):</div>
         <div class="result-row">
           <div class="result-code" id="tx1Display">-</div>
-          <button class="copy-btn" onclick="copyToClipboard('tx1Display', event)">📋</button>
+          <button class="copy-btn" onclick="copyToClipboard('tx1Display', event)"></button>
         </div>
       </div>
-      
+
       <div class="result-box">
-        <div class="result-label">🔗 Tx 2 (Attest):</div>
+        <div class="result-label"> Tx 2 (Attest):</div>
         <div class="result-row">
           <div class="result-code" id="tx2Display">-</div>
-          <button class="copy-btn" onclick="copyToClipboard('tx2Display', event)">📋</button>
+          <button class="copy-btn" onclick="copyToClipboard('tx2Display', event)"></button>
         </div>
       </div>
     </div>
@@ -151,14 +152,13 @@
       ]
     };
 
-    // Wykrywanie portfeli
     const WALLETS = {
       metamask: { name: 'MetaMask', icon: '🦊', detector: () => window.ethereum?.isMetaMask },
       rabby: { name: 'Rabby', icon: '🐰', detector: () => window.ethereum?.isRabby || (window.ethereum?.isMetaMask && window.ethereum?.rabby?.isRabby) },
       coinbase: { name: 'Coinbase Wallet', icon: '🔵', detector: () => window.ethereum?.isCoinbaseWallet },
       brave: { name: 'Brave Wallet', icon: '🦁', detector: () => window.ethereum?.isBraveWallet },
-      okx: { name: 'OKX Wallet', icon: '⬛', detector: () => window.okxwallet || window.ethereum?.isOKExWallet },
-      phantom: { name: 'Phantom', icon: '👻', detector: () => window.phantom?.ethereum }
+      okx: { name: 'OKX Wallet', icon: '', detector: () => window.okxwallet || window.ethereum?.isOKExWallet },
+      phantom: { name: 'Phantom', icon: '', detector: () => window.phantom?.ethereum }
     };
 
     let provider, signer, router, userAddress;
@@ -192,46 +192,41 @@
       return '0x' + Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b => b.toString(16).padStart(2,'0')).join('');
     }
 
-    // Wykryj dostępne portfele i pokaż listę
     function detectAndShowWallets() {
       const walletList = document.getElementById('walletList');
       const noWalletMsg = document.getElementById('noWalletMsg');
       let foundWallets = [];
 
-      // Sprawdź każdy portfel
       for (const [key, wallet] of Object.entries(WALLETS)) {
         try {
           if (wallet.detector()) {
             foundWallets.push({ key, ...wallet });
           }
         } catch(e) {
+          console.log(`Error detecting ${wallet.name}:`, e);
         }
       }
 
-      // Jeśli nie znaleziono żadnych
       if (foundWallets.length === 0) {
         noWalletMsg.classList.remove('hidden');
         return;
       }
 
-      // Wyświetl listę
       walletList.innerHTML = foundWallets.map(w => `
         <button class="wallet-btn" onclick="connectWallet('${w.key}')">
           <span style="font-size: 24px;">${w.icon}</span>
           <span class="wallet-name">${w.name}</span>
-          <span class="wallet-status">Wykryto ✓</span>
+          <span class="wallet-status">Detected ✓</span>
         </button>
       `).join('');
     }
 
-    // Połącz z wybranym portfelem
     window.connectWallet = async (walletKey) => {
       if (!window.ethereum) {
-        return showStatus('❌ Nie wykryto portfela. Odśwież stronę po zainstalowaniu.', 'error');
+        return showStatus('❌ No wallet detected. Please refresh after installing.', 'error');
       }
-      
+
       try {
-        // Specjalna obsługa dla niektórych portfeli
         if (walletKey === 'phantom' && window.phantom?.ethereum) {
           provider = new ethers.providers.Web3Provider(window.phantom.ethereum, "any");
         } else if (walletKey === 'okx' && window.okxwallet) {
@@ -239,21 +234,21 @@
         } else {
           provider = new ethers.providers.Web3Provider(window.ethereum, "any");
         }
-        
+
         await provider.send("eth_requestAccounts", []);
         signer = provider.getSigner();
         userAddress = await signer.getAddress();
         router = new ethers.Contract(CONFIG.ROUTER_ADDRESS, CONFIG.ROUTER_ABI, signer);
-        
+
         document.getElementById('walletList').classList.add('hidden');
         document.getElementById('demoCard').classList.remove('hidden');
-        
+
         await checkNetwork();
         await checkBalance();
         updateStep(1, true);
-        showStatus(`✅ Połączono z ${WALLETS[walletKey].name}!`, 'success');
+        showStatus(`✅ Connected to ${WALLETS[walletKey].name}!`, 'success');
       } catch(e) {
-        showStatus('❌ Błąd połączenia: ' + (e.reason || e.message || e), 'error');
+        showStatus('❌ Connection error: ' + (e.reason || e.message || e), 'error');
       }
     };
 
@@ -262,7 +257,7 @@
       try {
         const network = await provider.getNetwork();
         if (network.chainId !== 84532) {
-          document.getElementById('networkStatus').textContent = `⚠️ Sieć: ${network.name} (Chain ID: ${network.chainId})`;
+          document.getElementById('networkStatus').textContent = `⚠️ Network: ${network.name} (Chain ID: ${network.chainId})`;
           networkWarning.classList.remove('hidden');
           return false;
         } else {
@@ -279,20 +274,18 @@
         const balance = await provider.getBalance(userAddress);
         if (balance.lt(ethers.utils.parseEther("0.0005"))) {
           balanceWarning.classList.remove('hidden');
-          // Ustaw link do faucet z adresem
-          const faucetUrl = `https://sepolia-faucet.pk910.de/`;
+          const faucetUrl = `https://www.alchemy.com/faucets/base-sepolia`;
           document.getElementById('faucetLink').href = faucetUrl;
           demoBtn.disabled = true;
-          demoBtn.textContent = '🔒 Brak ETH';
+          demoBtn.textContent = '🔒 No ETH';
         } else {
           balanceWarning.classList.add('hidden');
           demoBtn.disabled = false;
-          demoBtn.textContent = '🚀 Uruchom Pełne Demo';
+          demoBtn.textContent = '🚀 Run Full Demo';
         }
       } catch(e) {}
     }
 
-    // Przycisk przełączania sieci
     document.getElementById('switchBtn').onclick = async () => {
       try {
         await provider.send("wallet_switchEthereumChain", [{ chainId: CONFIG.CHAIN_PARAMS.chainId }]);
@@ -310,61 +303,59 @@
     document.getElementById('demoBtn').onclick = async () => {
       const btn = document.getElementById('demoBtn');
       btn.disabled = true;
-      btn.textContent = '⏳ Przetwarzanie...';
-      
+      btn.textContent = '⏳ Processing...';
+
       try {
-        if (!(await checkNetwork())) throw new Error("Przełącz się na Base Sepolia!");
-        
+        if (!(await checkNetwork())) throw new Error("Switch to Base Sepolia first!");
+
         updateStep(2, true);
-        showStatus('🔄 Tworzenie zadania... Zatwierdź transakcję w portfelu.');
-        
+        showStatus('🔄 Creating task... Approve transaction in wallet.');
+
         const taskHash = generateHash();
         const reward = ethers.utils.parseEther("1");
-        
+
         const tx1 = await router.requestExecution(userAddress, taskHash, reward);
-        showStatus('⏳ Oczekiwanie na potwierdzenie bloku...');
+        showStatus(' Waiting for block confirmation...');
         const receipt1 = await tx1.wait();
-        
-        showStatus('🔍 Przetwarzanie executionId...');
+
+        showStatus('🔍 Processing executionId...');
         const event = receipt1.events?.find(e => e.event === 'ExecutionRequested');
-        if (!event) throw new Error('Nie znaleziono ExecutionRequested w logs');
+        if (!event) throw new Error('ExecutionRequested event not found');
         const executionId = event.args.executionId;
-        
+
         document.getElementById('execIdDisplay').textContent = executionId;
         document.getElementById('tx1Display').textContent = receipt1.transactionHash;
         resultsEl.classList.remove('hidden');
-        
-        showStatus('🤖 Symulacja pracy AI (3 sekundy)...');
+
+        showStatus('🤖 Simulating AI work (3 seconds)...');
         await new Promise(r => setTimeout(r, 3000));
-        
+
         updateStep(3, true);
-        showStatus('📤 Wysyłanie attestation... Zatwierdź drugą transakcję.');
-        
+        showStatus('📤 Submitting attestation... Approve second transaction.');
+
         const attestationHash = generateHash();
         const tx2 = await router.submitAttestation(executionId, attestationHash);
         const receipt2 = await tx2.wait();
-        
+
         document.getElementById('tx2Display').textContent = receipt2.transactionHash;
-        
-        showStatus('✅ DEMO ZAKOŃCZONE SUKCESEM!\n\n🎉 Wykonałeś pełny cykl Noema AI!', 'success');
-        btn.textContent = '🔄 Uruchom Ponownie';
-        
+
+        showStatus('✅ DEMO COMPLETE!\n\n🎉 You executed the full Noema AI cycle!', 'success');
+        btn.textContent = '🔄 Run Again';
+
       } catch(e) {
-        showStatus('❌ Błąd: ' + (e.reason || e.message || e), 'error');
-        btn.textContent = '🚀 Uruchom Pełne Demo';
+        showStatus('❌ Error: ' + (e.reason || e.message || e), 'error');
+        btn.textContent = '🚀 Run Full Demo';
       } finally {
         btn.disabled = false;
         await checkBalance();
       }
     };
-    
-    // Nasłuchiwanie zmian
+
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', () => location.reload());
       window.ethereum.on('chainChanged', () => location.reload());
     }
 
-    // Wykryj portfele po załadowaniu strony
     window.addEventListener('load', detectAndShowWallets);
   </script>
 </body>

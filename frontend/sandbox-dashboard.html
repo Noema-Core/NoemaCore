@@ -2,109 +2,371 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Noema Sandbox — Dashboard PoC</title>
-  <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+  <title>🤖 Noema AI - One-Click Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <style>
-    body { font-family: monospace; max-width: 800px; margin: 2rem auto; padding: 0 1rem; background: #0d1117; color: #e6edf3; }
-    .card { border: 1px solid #30363d; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #161b22; }
-    .status { color: #3fb950; font-weight: bold; }
-    .error { color: #f85149; }
-    input, button { padding: 0.5rem; margin: 0.25rem 0; width: 100%; box-sizing: border-box; background: #0d1117; color: #e6edf3; border: 1px solid #30363d; border-radius: 4px; }
-    button { background: #238636; cursor: pointer; }
-    button:hover { background: #2ea043; }
-    pre { background: #0d1117; padding: 0.5rem; border-radius: 4px; overflow-x: auto; color: #8b949e; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background: #0f172a; color: #e2e8f0; }
+    .card { background: #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid #334155; }
+    h1 { text-align: center; color: #f8fafc; margin-bottom: 8px; }
+    .subtitle { text-align: center; color: #94a3b8; margin-bottom: 24px; font-size: 14px; }
+    button { width: 100%; padding: 14px; font-size: 16px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+    .btn-demo { background: #10b981; color: white; font-size: 18px; padding: 16px; }
+    .btn-demo:hover { background: #059669; }
+    .btn-demo:disabled { background: #64748b; cursor: not-allowed; }
+    .status { margin-top: 16px; padding: 12px; border-radius: 8px; font-size: 14px; white-space: pre-wrap; line-height: 1.5; }
+    .status.info { background: #1e3a8a; color: #dbeafe; border: 1px solid #3b82f6; }
+    .status.success { background: #064e3b; color: #d1fae5; border: 1px solid #10b981; }
+    .status.error { background: #450a0a; color: #fee2e2; border: 1px solid #ef4444; }
+    .result-box { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-top: 12px; }
+    .result-label { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
+    .result-row { display: flex; gap: 8px; align-items: center; }
+    .result-code { flex: 1; font-family: monospace; font-size: 12px; color: #f8fafc; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .copy-btn { background: #475569; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; border: none; cursor: pointer; }
+    .copy-btn:hover { background: #64748b; }
+    .hidden { display: none; }
+    .network { text-align: center; color: #94a3b8; font-size: 13px; margin-bottom: 16px; }
+    .steps { display: flex; justify-content: space-between; margin: 20px 0; font-size: 13px; color: #64748b; }
+    .step { text-align: center; flex: 1; }
+    .step.active { color: #3b82f6; font-weight: 600; }
+    .step.done { color: #10b981; }
+    .info-box { background: #1e3a8a; border-left: 4px solid #3b82f6; padding: 12px; margin: 16px 0; border-radius: 6px; font-size: 13px; }
+    .btn-switch { background: #f59e0b; color: black; margin-top: 10px; }
+    .btn-switch:hover { background: #d97706; }
+    .btn-faucet { background: #10b981; color: white; margin-top: 10px; display: inline-block; width: auto; padding: 8px 16px; text-decoration: none; text-align: center; }
+    .btn-faucet:hover { background: #059669; }
+    
+    /* Wybór portfela */
+    .wallet-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px; }
+    .wallet-btn { display: flex; align-items: center; gap: 12px; background: #334155; color: white; padding: 12px 16px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; text-align: left; }
+    .wallet-btn:hover { background: #475569; border-color: #3b82f6; }
+    .wallet-icon { width: 32px; height: 32px; border-radius: 6px; }
+    .wallet-name { font-weight: 600; font-size: 15px; }
+    .wallet-status { margin-left: auto; font-size: 12px; color: #10b981; }
+    
+    /* Ostrzeżenie bezpieczeństwa */
+    .security-warning { background: #450a0a; border: 2px solid #ef4444; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .security-warning h3 { color: #fca5a5; margin: 0 0 8px 0; font-size: 16px; }
+    .security-warning ul { margin: 8px 0; padding-left: 20px; color: #fecaca; font-size: 13px; }
+    .security-warning li { margin: 4px 0; }
   </style>
 </head>
 <body>
-  <h1>🧱 Noema Sandbox — Dashboard PoC</h1>
+  <h1>🤖 Noema AI Demo</h1>
+  <p class="subtitle">Base Sepolia • Testnet • Tokeny bez wartości rynkowej</p>
+  
+  <div class="network" id="networkStatus">🔌 Wybierz portfel, aby rozpocząć</div>
   
   <div class="card">
-    <h3>🔗 Połączenie z siecią</h3>
-    <button id="connectBtn">Połącz portfel (MetaMask)</button>
-    <div id="networkStatus" class="status">Niepołączony</div>
+    <!-- Ostrzeżenie bezpieczeństwa -->
+    <div class="security-warning">
+      <h3>⚠️ BEZPIECZEŃSTWO - PRZECZYTAJ!</h3>
+      <ul>
+        <li><strong>Używaj TYLKO portfela testowego</strong> - NIE podłączaj portfela z prawdziwymi środkami!</li>
+        <li>To jest testnet - tokeny nie mają wartości, tak samo ETH na gaz są darmowe i nie mają wartości rynkowej</li>
+        <li>Zalecamy utworzenie nowego portfela wyłącznie do testów</li>
+      </ul>
+    </div>
+    
+    <h3 style="margin: 20px 0 10px 0; text-align: center;">🔗 Wybierz portfel:</h3>
+    <div id="walletList" class="wallet-grid">
+      <!-- Tutaj JavaScript wstawi dostępne portfele -->
+    </div>
+    <div id="noWalletMsg" class="hidden" style="text-align: center; padding: 20px; color: #94a3b8;">
+      ❌ Nie wykryto żadnych portfeli.<br>
+      <small>Zainstaluj <a href="https://metamask.io" target="_blank" style="color: #3b82f6;">MetaMask</a> lub <a href="https://rabby.io" target="_blank" style="color: #3b82f6;">Rabby</a></small>
+    </div>
+    
+    <!-- Sekcja przełączania sieci -->
+    <div id="networkWarning" class="hidden" style="text-align:center; margin-top:15px; border-top:1px solid #334155; padding-top:15px;">
+      <p style="color:#f59e0b; margin:0;">⚠️ Nie jesteś na Base Sepolia!</p>
+      <button id="switchBtn" class="btn-switch">🔄 Przełącz na Base Sepolia</button>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>📋 Zgłoś zadanie do SandboxRouter</h3>
-    <input id="providerAddr" placeholder="Adres providera (0x...)">
-    <input id="taskHash" placeholder="taskHash (keccak256 kodu)">
-    <input id="reward" placeholder="Nagroda (wei, np. 1000000000000000000)">
-    <input id="timeout" placeholder="Timeout (sekundy, np. 3600)" value="3600">
-    <button id="requestBtn">Wyślij requestExecution()</button>
-    <pre id="requestResult"></pre>
+  <div class="card hidden" id="demoCard">
+    <div class="steps">
+      <div class="step" id="step1">1️⃣ Połącz</div>
+      <div class="step" id="step2">2️⃣ Utwórz</div>
+      <div class="step" id="step3">3️⃣ Zatwierdź</div>
+    </div>
+    
+    <div class="info-box">
+      ℹ️ <strong>Uwaga:</strong> Zatwierdzisz 2 transakcje w portfelu. Koszt to ułamki centa w testnetowym ETH.
+    </div>
+    
+    <!-- Sekcja braku ETH -->
+    <div id="balanceWarning" class="hidden" style="text-align:center; margin-bottom:15px;">
+      <p style="color:#ef4444; margin:0;">⛔ Brak ETH na gaz!</p>
+      <p style="font-size:12px; color:#94a3b8;">Potrzebujesz ~0.001 ETH na Base Sepolia. <strong>Skopiuj swój adres i wklej go na stronie kranika.</strong></p>
+      <a href="#" id="faucetLink" target="_blank" class="btn-faucet">🚰 Otwórz kran z moim adresem</a>
+    </div>
+
+    <button id="demoBtn" class="btn-demo">🚀 Uruchom Pełne Demo</button>
+    
+    <div id="status" class="status hidden"></div>
+    
+    <div id="results" class="hidden">
+      <div class="result-box">
+        <div class="result-label"> Execution ID:</div>
+        <div class="result-row">
+          <div class="result-code" id="execIdDisplay">-</div>
+          <button class="copy-btn" onclick="copyToClipboard('execIdDisplay', event)">📋</button>
+        </div>
+      </div>
+      
+      <div class="result-box">
+        <div class="result-label">🔗 Tx 1 (Create):</div>
+        <div class="result-row">
+          <div class="result-code" id="tx1Display">-</div>
+          <button class="copy-btn" onclick="copyToClipboard('tx1Display', event)">📋</button>
+        </div>
+      </div>
+      
+      <div class="result-box">
+        <div class="result-label">🔗 Tx 2 (Attest):</div>
+        <div class="result-row">
+          <div class="result-code" id="tx2Display">-</div>
+          <button class="copy-btn" onclick="copyToClipboard('tx2Display', event)">📋</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>📜 Wyślij attestation</h3>
-    <input id="execId" placeholder="executionId (0x...)">
-    <input id="attestationHash" placeholder="attestation_hash (0x...)">
-    <button id="submitBtn">Wyślij submitAttestation()</button>
-    <pre id="submitResult"></pre>
-  </div>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
   <script>
     const CONFIG = {
       RPC_URL: "https://sepolia.base.org",
-      ROUTER_ADDRESS: "0xA5671fFd88F8765F45d07798DDC5e1995Ab795e8",
-      TOKEN_ADDRESS: "0x663E4ACB6251F1C7A65194E3BF141E59CfA32469",
-      TRUST_ADDRESS: "0x5ECFEc148568fA26CD3A97190062a1E2892510Fe",
-      ESCROW_ADDRESS: "0xef0Dd462fe20575528a64Dc61B60aC2d7eA50B17",
-      ROUTER_ABI: [{
-        "inputs": [{"name":"_provider","type":"address"},{"name":"_taskHash","type":"bytes32"},{"name":"_reward","type":"uint256"},{"name":"_timeout","type":"uint256"}],
-        "name":"requestExecution","outputs":[{"name":"","type":"bytes32"}],"stateMutability":"nonpayable","type":"function"
-      },{
-        "inputs": [{"name":"_executionId","type":"bytes32"},{"name":"_attestationHash","type":"bytes32"}],
-        "name":"submitAttestation","outputs":[],"stateMutability":"nonpayable","type":"function"
-      }]
+      ROUTER_ADDRESS: "0x9bc773fDBb4C2909e287Df3dcD4166e539bA5cBc",
+      CHAIN_PARAMS: {
+        chainId: '0x14a34', // 84532
+        chainName: 'Base Sepolia',
+        nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+        rpcUrls: ['https://sepolia.base.org'],
+        blockExplorerUrls: ['https://sepolia.basescan.org']
+      },
+      ROUTER_ABI: [
+        {"inputs":[{"name":"_provider","type":"address"},{"name":"_taskHash","type":"bytes32"},{"name":"_reward","type":"uint256"}],"name":"requestExecution","outputs":[{"name":"","type":"bytes32"}],"stateMutability":"nonpayable","type":"function"},
+        {"inputs":[{"name":"_executionId","type":"bytes32"},{"name":"_attestationHash","type":"bytes32"}],"name":"submitAttestation","outputs":[],"stateMutability":"nonpayable","type":"function"},
+        {"anonymous":false,"inputs":[{"indexed":true,"name":"executionId","type":"bytes32"},{"indexed":true,"name":"client","type":"address"},{"indexed":true,"name":"provider","type":"address"},{"name":"reward","type":"uint256"},{"name":"deadline","type":"uint256"}],"name":"ExecutionRequested","type":"event"}
+      ]
     };
 
-    let provider, signer, router;
+    // Wykrywanie portfeli
+    const WALLETS = {
+      metamask: { name: 'MetaMask', icon: '🦊', detector: () => window.ethereum?.isMetaMask },
+      rabby: { name: 'Rabby', icon: '🐰', detector: () => window.ethereum?.isRabby || (window.ethereum?.isMetaMask && window.ethereum?.rabby?.isRabby) },
+      coinbase: { name: 'Coinbase Wallet', icon: '🔵', detector: () => window.ethereum?.isCoinbaseWallet },
+      brave: { name: 'Brave Wallet', icon: '🦁', detector: () => window.ethereum?.isBraveWallet },
+      okx: { name: 'OKX Wallet', icon: '⬛', detector: () => window.okxwallet || window.ethereum?.isOKExWallet },
+      phantom: { name: 'Phantom', icon: '👻', detector: () => window.phantom?.ethereum }
+    };
 
-    document.getElementById('connectBtn').onclick = async () => {
-      if (window.ethereum) {
-        provider = new ethers.providers.Web3Provider(window.ethereum);
+    let provider, signer, router, userAddress;
+    const statusEl = document.getElementById('status');
+    const resultsEl = document.getElementById('results');
+    const networkWarning = document.getElementById('networkWarning');
+    const balanceWarning = document.getElementById('balanceWarning');
+    const demoBtn = document.getElementById('demoBtn');
+
+    function showStatus(msg, type='info') {
+      statusEl.textContent = msg;
+      statusEl.className = `status ${type}`;
+      statusEl.classList.remove('hidden');
+    }
+
+    function updateStep(n, done=false) {
+      document.getElementById('step'+n).className = `step ${done?'done':'active'}`;
+    }
+
+    function copyToClipboard(elementId, e) {
+      const text = document.getElementById(elementId).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = e.target;
+        const original = btn.textContent;
+        btn.textContent = '✅';
+        setTimeout(() => btn.textContent = original, 1500);
+      });
+    }
+
+    function generateHash() {
+      return '0x' + Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    // Wykryj dostępne portfele i pokaż listę
+    function detectAndShowWallets() {
+      const walletList = document.getElementById('walletList');
+      const noWalletMsg = document.getElementById('noWalletMsg');
+      let foundWallets = [];
+
+      // Sprawdź każdy portfel
+      for (const [key, wallet] of Object.entries(WALLETS)) {
+        try {
+          if (wallet.detector()) {
+            foundWallets.push({ key, ...wallet });
+          }
+        } catch(e) {
+        }
+      }
+
+      // Jeśli nie znaleziono żadnych
+      if (foundWallets.length === 0) {
+        noWalletMsg.classList.remove('hidden');
+        return;
+      }
+
+      // Wyświetl listę
+      walletList.innerHTML = foundWallets.map(w => `
+        <button class="wallet-btn" onclick="connectWallet('${w.key}')">
+          <span style="font-size: 24px;">${w.icon}</span>
+          <span class="wallet-name">${w.name}</span>
+          <span class="wallet-status">Wykryto ✓</span>
+        </button>
+      `).join('');
+    }
+
+    // Połącz z wybranym portfelem
+    window.connectWallet = async (walletKey) => {
+      if (!window.ethereum) {
+        return showStatus('❌ Nie wykryto portfela. Odśwież stronę po zainstalowaniu.', 'error');
+      }
+      
+      try {
+        // Specjalna obsługa dla niektórych portfeli
+        if (walletKey === 'phantom' && window.phantom?.ethereum) {
+          provider = new ethers.providers.Web3Provider(window.phantom.ethereum, "any");
+        } else if (walletKey === 'okx' && window.okxwallet) {
+          provider = new ethers.providers.Web3Provider(window.okxwallet, "any");
+        } else {
+          provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+        }
+        
         await provider.send("eth_requestAccounts", []);
         signer = provider.getSigner();
-        const network = await provider.getNetwork();
-        document.getElementById('networkStatus').textContent = `✅ Połączono: ${network.name} (chainId: ${network.chainId})`;
+        userAddress = await signer.getAddress();
         router = new ethers.Contract(CONFIG.ROUTER_ADDRESS, CONFIG.ROUTER_ABI, signer);
-      } else {
-        document.getElementById('networkStatus').textContent = "❌ MetaMask nie wykryty";
-        document.getElementById('networkStatus').className = "error";
+        
+        document.getElementById('walletList').classList.add('hidden');
+        document.getElementById('demoCard').classList.remove('hidden');
+        
+        await checkNetwork();
+        await checkBalance();
+        updateStep(1, true);
+        showStatus(`✅ Połączono z ${WALLETS[walletKey].name}!`, 'success');
+      } catch(e) {
+        showStatus('❌ Błąd połączenia: ' + (e.reason || e.message || e), 'error');
       }
     };
 
-    document.getElementById('requestBtn').onclick = async () => {
-      if (!router) return alert("Najpierw połącz portfel!");
+    async function checkNetwork() {
+      if (!provider) return false;
       try {
-        const tx = await router.requestExecution(
-          document.getElementById('providerAddr').value,
-          document.getElementById('taskHash').value,
-          ethers.BigNumber.from(document.getElementById('reward').value),
-          parseInt(document.getElementById('timeout').value)
-        );
-        const receipt = await tx.wait();
-        document.getElementById('requestResult').textContent = `✅ Tx: ${receipt.transactionHash}\n🔍 executionId: ${receipt.events?.[0]?.args?.executionId || "sprawdź logs"}`;
-      } catch (e) {
-        document.getElementById('requestResult').textContent = `❌ Błąd: ${e.message}`;
-        document.getElementById('requestResult').className = "error";
+        const network = await provider.getNetwork();
+        if (network.chainId !== 84532) {
+          document.getElementById('networkStatus').textContent = `⚠️ Sieć: ${network.name} (Chain ID: ${network.chainId})`;
+          networkWarning.classList.remove('hidden');
+          return false;
+        } else {
+          document.getElementById('networkStatus').textContent = `✅ Base Sepolia (Chain ID: 84532)`;
+          networkWarning.classList.add('hidden');
+          return true;
+        }
+      } catch(e) { return false; }
+    }
+
+    async function checkBalance() {
+      if (!signer || !userAddress) return;
+      try {
+        const balance = await provider.getBalance(userAddress);
+        if (balance.lt(ethers.utils.parseEther("0.0005"))) {
+          balanceWarning.classList.remove('hidden');
+          // Ustaw link do faucet z adresem
+          const faucetUrl = `https://sepolia-faucet.pk910.de/`;
+          document.getElementById('faucetLink').href = faucetUrl;
+          demoBtn.disabled = true;
+          demoBtn.textContent = '🔒 Brak ETH';
+        } else {
+          balanceWarning.classList.add('hidden');
+          demoBtn.disabled = false;
+          demoBtn.textContent = '🚀 Uruchom Pełne Demo';
+        }
+      } catch(e) {}
+    }
+
+    // Przycisk przełączania sieci
+    document.getElementById('switchBtn').onclick = async () => {
+      try {
+        await provider.send("wallet_switchEthereumChain", [{ chainId: CONFIG.CHAIN_PARAMS.chainId }]);
+      } catch (switchError) {
+        if (switchError.code === 4902) {
+          await provider.send("wallet_addEthereumChain", [CONFIG.CHAIN_PARAMS]);
+        } else {
+          throw switchError;
+        }
       }
+      await checkNetwork();
+      await checkBalance();
     };
 
-    document.getElementById('submitBtn').onclick = async () => {
-      if (!router) return alert("Najpierw połącz portfel!");
+    document.getElementById('demoBtn').onclick = async () => {
+      const btn = document.getElementById('demoBtn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Przetwarzanie...';
+      
       try {
-        const tx = await router.submitAttestation(
-          document.getElementById('execId').value,
-          document.getElementById('attestationHash').value
-        );
-        const receipt = await tx.wait();
-        document.getElementById('submitResult').textContent = `✅ Attestation submitted!\n🔗 Tx: ${receipt.transactionHash}`;
-      } catch (e) {
-        document.getElementById('submitResult').textContent = `❌ Błąd: ${e.message}`;
-        document.getElementById('submitResult').className = "error";
+        if (!(await checkNetwork())) throw new Error("Przełącz się na Base Sepolia!");
+        
+        updateStep(2, true);
+        showStatus('🔄 Tworzenie zadania... Zatwierdź transakcję w portfelu.');
+        
+        const taskHash = generateHash();
+        const reward = ethers.utils.parseEther("1");
+        
+        const tx1 = await router.requestExecution(userAddress, taskHash, reward);
+        showStatus('⏳ Oczekiwanie na potwierdzenie bloku...');
+        const receipt1 = await tx1.wait();
+        
+        showStatus('🔍 Przetwarzanie executionId...');
+        const event = receipt1.events?.find(e => e.event === 'ExecutionRequested');
+        if (!event) throw new Error('Nie znaleziono ExecutionRequested w logs');
+        const executionId = event.args.executionId;
+        
+        document.getElementById('execIdDisplay').textContent = executionId;
+        document.getElementById('tx1Display').textContent = receipt1.transactionHash;
+        resultsEl.classList.remove('hidden');
+        
+        showStatus('🤖 Symulacja pracy AI (3 sekundy)...');
+        await new Promise(r => setTimeout(r, 3000));
+        
+        updateStep(3, true);
+        showStatus('📤 Wysyłanie attestation... Zatwierdź drugą transakcję.');
+        
+        const attestationHash = generateHash();
+        const tx2 = await router.submitAttestation(executionId, attestationHash);
+        const receipt2 = await tx2.wait();
+        
+        document.getElementById('tx2Display').textContent = receipt2.transactionHash;
+        
+        showStatus('✅ DEMO ZAKOŃCZONE SUKCESEM!\n\n🎉 Wykonałeś pełny cykl Noema AI!', 'success');
+        btn.textContent = '🔄 Uruchom Ponownie';
+        
+      } catch(e) {
+        showStatus('❌ Błąd: ' + (e.reason || e.message || e), 'error');
+        btn.textContent = '🚀 Uruchom Pełne Demo';
+      } finally {
+        btn.disabled = false;
+        await checkBalance();
       }
     };
+    
+    // Nasłuchiwanie zmian
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', () => location.reload());
+      window.ethereum.on('chainChanged', () => location.reload());
+    }
+
+    // Wykryj portfele po załadowaniu strony
+    window.addEventListener('load', detectAndShowWallets);
   </script>
 </body>
 </html>

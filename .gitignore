@@ -1,61 +1,25 @@
-# NoemaCore .gitignore
 # Environment & Secrets
 .env
-*.env.local
-*.env.*.local
-PRIVATE_KEY
-*.key
-*.pem
+.env.local
+.env.production
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-venv/
-env/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-.pytest_cache/
-
-# Foundry / Forge
+# Foundry / Solidity
 cache/
-broadcast/
 out/
-*.t.sol
-*.s.sol
+lib/
+*.log
+*.lock
+build_info.json
 
-# Node / npm
+# Frontend / Web
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# OS / Editor
+dist/
+*.map
 .DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
 *.swp
 *.swo
-*~
-.idea/
-.vscode/
-*.log
-
-# Build artifacts
-build/
-dist/
-*.egg-info/
-
-# Sensitive
-secrets.json
-deploy-config.json
-

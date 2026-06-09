@@ -6,357 +6,246 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background: #0f172a; color: #e2e8f0; }
-    .card { background: #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid #334155; }
-    h1 { text-align: center; color: #f8fafc; margin-bottom: 8px; }
-    .subtitle { text-align: center; color: #94a3b8; margin-bottom: 24px; font-size: 14px; }
-    button { width: 100%; padding: 14px; font-size: 16px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-    .btn-demo { background: #10b981; color: white; font-size: 18px; padding: 16px; }
-    .btn-demo:hover { background: #059669; }
-    .btn-demo:disabled { background: #64748b; cursor: not-allowed; }
-    .status { margin-top: 16px; padding: 12px; border-radius: 8px; font-size: 14px; white-space: pre-wrap; line-height: 1.5; }
-    .status.info { background: #1e3a8a; color: #dbeafe; border: 1px solid #3b82f6; }
-    .status.success { background: #064e3b; color: #d1fae5; border: 1px solid #10b981; }
-    .status.error { background: #450a0a; color: #fee2e2; border: 1px solid #ef4444; }
-    .result-box { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-top: 12px; }
-    .result-label { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
-    .result-row { display: flex; gap: 8px; align-items: center; }
-    .result-code { flex: 1; font-family: monospace; font-size: 12px; color: #f8fafc; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .copy-btn { background: #475569; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; border: none; cursor: pointer; }
-    .copy-btn:hover { background: #64748b; }
-    .hidden { display: none; }
-    .network { text-align: center; color: #94a3b8; font-size: 13px; margin-bottom: 16px; }
-    .steps { display: flex; justify-content: space-between; margin: 20px 0; font-size: 13px; color: #64748b; }
-    .step { text-align: center; flex: 1; }
-    .step.active { color: #3b82f6; font-weight: 600; }
-    .step.done { color: #10b981; }
-    .info-box { background: #1e3a8a; border-left: 4px solid #3b82f6; padding: 12px; margin: 16px 0; border-radius: 6px; font-size: 13px; }
-    .btn-switch { background: #f59e0b; color: black; margin-top: 10px; }
-    .btn-switch:hover { background: #d97706; }
-    .btn-faucet { background: #10b981; color: white; margin-top: 10px; display: inline-block; width: auto; padding: 8px 16px; text-decoration: none; text-align: center; }
-    .btn-faucet:hover { background: #059669; }
-
-    /* Wallet Selector */
-    .wallet-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px; }
-    .wallet-btn { display: flex; align-items: center; gap: 12px; background: #334155; color: white; padding: 12px 16px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; text-align: left; }
-    .wallet-btn:hover { background: #475569; border-color: #3b82f6; }
-    .wallet-icon { width: 32px; height: 32px; border-radius: 6px; }
-    .wallet-name { font-weight: 600; font-size: 15px; }
-    .wallet-status { margin-left: auto; font-size: 12px; color: #10b981; }
-
-    /* Security Warning */
-    .security-warning { background: #450a0a; border: 2px solid #ef4444; border-radius: 8px; padding: 16px; margin: 16px 0; }
-    .security-warning h3 { color: #fca5a5; margin: 0 0 8px 0; font-size: 16px; }
-    .security-warning ul { margin: 8px 0; padding-left: 20px; color: #fecaca; font-size: 13px; }
-    .security-warning li { margin: 4px 0; }
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:40px auto;padding:20px;background:#0f172a;color:#e2e8f0}
+    .card{background:#1e293b;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 4px 12px rgba(0,0,0,0.3);border:1px solid #334155}
+    h1{text-align:center;color:#f8fafc;margin-bottom:8px}
+    .subtitle{text-align:center;color:#94a3b8;margin-bottom:24px;font-size:14px}
+    button{width:100%;padding:14px;font-size:16px;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:all 0.2s}
+    .btn-demo{background:#10b981;color:white;font-size:18px;padding:16px}
+    .btn-demo:hover{background:#059669}
+    .btn-demo:disabled{background:#64748b;cursor:not-allowed}
+    .status{margin-top:16px;padding:12px;border-radius:8px;font-size:14px;white-space:pre-wrap;line-height:1.5}
+    .status.info{background:#1e3a8a;color:#dbeafe;border:1px solid #3b82f6}
+    .status.success{background:#064e3b;color:#d1fae5;border:1px solid #10b981}
+    .status.error{background:#450a0a;color:#fee2e2;border:1px solid #ef4444}
+    .result-box{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:12px;margin-top:12px}
+    .result-label{color:#94a3b8;font-size:12px;margin-bottom:6px}
+    .result-row{display:flex;gap:8px;align-items:center}
+    .result-code{flex:1;font-family:monospace;font-size:12px;color:#f8fafc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .copy-btn{background:#475569;color:white;padding:6px 12px;border-radius:6px;font-size:12px;border:none;cursor:pointer}
+    .copy-btn:hover{background:#64748b}
+    .hidden{display:none}
+    .network{text-align:center;color:#94a3b8;font-size:13px;margin-bottom:16px}
+    .steps{display:flex;justify-content:space-between;margin:20px 0;font-size:13px;color:#64748b}
+    .step{text-align:center;flex:1}
+    .step.active{color:#3b82f6;font-weight:600}
+    .step.done{color:#10b981}
+    .info-box{background:#1e3a8a;border-left:4px solid #3b82f6;padding:12px;margin:16px 0;border-radius:6px;font-size:13px}
+    .btn-switch{background:#f59e0b;color:black;margin-top:10px}
+    .btn-switch:hover{background:#d97706}
+    .btn-faucet{background:#10b981;color:white;margin-top:10px;display:inline-block;width:auto;padding:8px 16px;text-decoration:none;text-align:center;border:none;cursor:pointer}
+    .btn-faucet:hover{background:#059669}
+    .wallet-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:15px}
+    .wallet-btn{display:flex;align-items:center;gap:12px;background:#334155;color:white;padding:12px 16px;border-radius:8px;border:2px solid transparent;cursor:pointer;transition:all 0.2s;text-align:left}
+    .wallet-btn:hover{background:#475569;border-color:#3b82f6}
+    .wallet-icon{width:32px;height:32px;border-radius:6px}
+    .wallet-name{font-weight:600;font-size:15px}
+    .wallet-status{margin-left:auto;font-size:12px;color:#10b981}
+    .security-warning{background:#450a0a;border:2px solid #ef4444;border-radius:8px;padding:16px;margin:16px 0}
+    .security-warning h3{color:#fca5a5;margin:0 0 8px 0;font-size:16px}
+    .security-warning ul{margin:8px 0;padding-left:20px;color:#fecaca;font-size:13px}
+    .security-warning li{margin:4px 0}
+    .wizard-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box}
+    .wizard-modal{background:#1e293b;border:1px solid #334155;border-radius:12px;max-width:500px;width:100%;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,0.5);max-height:90vh;overflow-y:auto}
+    .wizard-modal h2{color:#f8fafc;margin:0 0 8px 0;font-size:20px;text-align:center}
+    .wizard-modal .wizard-subtitle{color:#94a3b8;text-align:center;font-size:13px;margin-bottom:20px}
+    .wizard-step{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:14px;margin-bottom:12px}
+    .wizard-step.active{border-color:#3b82f6}
+    .wizard-step.done{border-color:#10b981;opacity:0.7}
+    .wizard-step-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .wizard-step-title{color:#f8fafc;font-weight:600;font-size:14px}
+    .wizard-step-status{font-size:12px;color:#64748b}
+    .wizard-step.done .wizard-step-status{color:#10b981}
+    .wizard-step p{color:#94a3b8;font-size:12px;margin:0 0 10px 0;line-height:1.5}
+    .wizard-btn{display:inline-block;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;cursor:pointer;border:none;transition:all 0.2s;margin-right:8px}
+    .wizard-btn-primary{background:#3b82f6;color:white}
+    .wizard-btn-primary:hover{background:#2563eb}
+    .wizard-btn-check{background:#10b981;color:white}
+    .wizard-btn-check:hover{background:#059669}
+    .wizard-btn:disabled{background:#475569;cursor:not-allowed;opacity:0.5}
+    .wizard-balance{text-align:center;padding:12px;background:#0f172a;border-radius:8px;margin:16px 0;font-size:13px;color:#94a3b8;border:1px solid #334155}
+    .wizard-balance strong{color:#f8fafc;font-size:16px;display:block;margin-top:4px}
+    .wizard-balance.ready{color:#10b981;border-color:#10b981}
+    .wizard-balance.ready strong{color:#10b981}
+    .wizard-close-btn{width:100%;padding:12px;background:#475569;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px;margin-top:8px}
+    .wizard-close-btn:hover{background:#64748b}
+    .wizard-close-btn:disabled{background:#1e293b;color:#64748b;cursor:not-allowed}
+    .wizard-close-btn.ready{background:#10b981}
+    .wizard-close-btn.ready:hover{background:#059669}
+    .debug-console{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:10px;margin-top:15px;font-family:monospace;font-size:11px;color:#94a3b8;max-height:150px;overflow-y:auto}
+    .debug-console .log{margin:2px 0}
+    .debug-console .log.error{color:#fca5a5}
+    .debug-console .log.success{color:#86efac}
   </style>
 </head>
 <body>
-  <h1>🤖 Noema AI Demo</h1>
+  <h1> Noema AI Demo</h1>
   <p class="subtitle">Base Sepolia • Testnet • Tokens with no market value</p>
-
   <div class="network" id="networkStatus">🔌 Select wallet to start</div>
-
   <div class="card">
-    <!-- Security Warning -->
     <div class="security-warning">
-      <h3>⚠ SECURITY - READ THIS!</h3>
+      <h3> SECURITY - READ THIS!</h3>
       <ul>
         <li><strong>Use ONLY a test wallet</strong> - DO NOT connect a wallet with real funds!</li>
         <li>This is a testnet - tokens have no value, ETH for gas is free and has no market value.</li>
         <li>We recommend creating a new wallet exclusively for testing.</li>
       </ul>
     </div>
-
     <h3 style="margin: 20px 0 10px 0; text-align: center;">🔗 Select Wallet:</h3>
-    <div id="walletList" class="wallet-grid">
-      <!-- JS will populate wallets here -->
-    </div>
+    <div id="walletList" class="wallet-grid"></div>
     <div id="noWalletMsg" class="hidden" style="text-align: center; padding: 20px; color: #94a3b8;">
       ❌ No wallets detected.<br>
-      <small>Please install <a href="https://metamask.io" target="_blank" style="color: #3b82f6;">MetaMask</a> or <a href="https://rabby.io" target="_blank" style="color: #3b82f6;">Rabby</a></small>
+      <small>Please install <a href="https://metamask.io" target="_blank" style="color: #3b82f6;">MetaMask</a> or <a href="https://rabby.io" target="_blank" style="color: #3b82f6;">Rabby</a>.<br>
+      <strong>Note:</strong> If using Brave, ensure "Use Ethereum provider for dapps" is enabled in Settings -> Web3.</small>
     </div>
-
-    <!-- Network Switch Section -->
-    <div id="networkWarning" class="hidden" style="text-align:center; margin-top:15px; border-top:1px solid #334155; padding-top:15px;">
-      <p style="color:#f59e0b; margin:0;">⚠ You are not on Base Sepolia!</p>
+    <div id="networkWarning" class="hidden" style="text-align:center; margin-top:15px; border-top: 1px solid #334155; padding-top:15px;">
+      <p style="color:#f59e0b; margin:0;"> You are not on Base Sepolia!</p>
       <button id="switchBtn" class="btn-switch"> Switch to Base Sepolia</button>
     </div>
   </div>
-
   <div class="card hidden" id="demoCard">
     <div class="steps">
-      <div class="step" id="step1">1️ Connect</div>
-      <div class="step" id="step2">2️ Create</div>
-      <div class="step" id="step3">3️ Attest</div>
+      <div class="step" id="step1">1 Connect</div>
+      <div class="step" id="step2">2 Create</div>
+      <div class="step" id="step3">3 Attest</div>
     </div>
-
-    <div class="info-box">
-      ℹ️ <strong>Note:</strong> You will approve 2 transactions. Cost is a fraction of a cent in testnet ETH.
-    </div>
-
-    <!-- Balance Warning -->
+    <div class="info-box">ℹ <strong>Note:</strong> You will approve 2 transactions. Cost is a fraction of a cent in testnet ETH.</div>
     <div id="balanceWarning" class="hidden" style="text-align:center; margin-bottom:15px;">
       <p style="color:#ef4444; margin:0;">⛔ No ETH for gas!</p>
       <p style="font-size:12px; color:#94a3b8;">You need ~0.001 ETH on Base Sepolia.</p>
-      <a href="#" id="faucetLink" target="_blank" class="btn-faucet">🚰 Get free ETH</a>
+      <button id="openWizardBtn" class="btn-faucet">💰 Get Test ETH (Wizard)</button>
     </div>
-
     <button id="demoBtn" class="btn-demo"> Run Full Demo</button>
-
     <div id="status" class="status hidden"></div>
-
     <div id="results" class="hidden">
-      <div class="result-box">
-        <div class="result-label">Execution ID:</div>
-        <div class="result-row">
-          <div class="result-code" id="execIdDisplay">-</div>
-          <button class="copy-btn" onclick="copyToClipboard('execIdDisplay', event)">📋</button>
-        </div>
-      </div>
-
-      <div class="result-box">
-        <div class="result-label"> Tx 1 (Create):</div>
-        <div class="result-row">
-          <div class="result-code" id="tx1Display">-</div>
-          <button class="copy-btn" onclick="copyToClipboard('tx1Display', event)"></button>
-        </div>
-      </div>
-
-      <div class="result-box">
-        <div class="result-label"> Tx 2 (Attest):</div>
-        <div class="result-row">
-          <div class="result-code" id="tx2Display">-</div>
-          <button class="copy-btn" onclick="copyToClipboard('tx2Display', event)"></button>
-        </div>
-      </div>
+      <div class="result-box"><div class="result-label">Execution ID:</div><div class="result-row"><div class="result-code" id="execIdDisplay">-</div><button class="copy-btn" onclick="copyToClipboard('execIdDisplay', event)">📋</button></div></div>
+      <div class="result-box"><div class="result-label"> Tx 1 (Create):</div><div class="result-row"><div class="result-code" id="tx1Display">-</div><button class="copy-btn" onclick="copyToClipboard('tx1Display', event)"></button></div></div>
+      <div class="result-box"><div class="result-label"> Tx 2 (Attest):</div><div class="result-row"><div class="result-code" id="tx2Display">-</div><button class="copy-btn" onclick="copyToClipboard('tx2Display', event)"></button></div></div>
     </div>
   </div>
-
+  <div id="wizardOverlay" class="wizard-overlay hidden">
+    <div class="wizard-modal">
+      <h2>💰 Get Test ETH</h2>
+      <p class="wizard-subtitle">Follow these steps to get test ETH for Base Sepolia</p>
+      <div id="wizardConnectSection" class="wizard-step active" style="text-align: center; padding: 20px;">
+        <p style="color: #fca5a5; margin-bottom: 12px; font-size: 13px;"> No wallet connected</p>
+        <button class="wizard-btn wizard-btn-primary" style="font-size: 14px; padding: 12px 24px;" onclick="window.connectWalletFromWizard()">🔗 Connect Wallet</button>
+        <p style="color: #94a3b8; font-size: 12px; margin-top: 10px;">Connect your wallet to continue</p>
+      </div>
+      <div class="wizard-step hidden" id="wizardStep0">
+        <div class="wizard-step-header"><div class="wizard-step-title">Step 1: Add Networks to Wallet</div><div class="wizard-step-status" id="step0Status">Pending</div></div>
+        <p>Click the button below to automatically add Ethereum Sepolia and Base Sepolia networks to your wallet.</p>
+        <button class="wizard-btn wizard-btn-primary" id="addNetworksBtn" onclick="window.addNetworks()">🔧 Add Networks</button>
+      </div>
+      <div class="wizard-step hidden" id="wizardStep1">
+        <div class="wizard-step-header"><div class="wizard-step-title">Step 2: Get Sepolia ETH</div><div class="wizard-step-status" id="step1Status">Pending</div></div>
+        <p>Open the faucet and request test ETH for Ethereum Sepolia network.</p>
+        <a href="https://sepolia-faucet.pk910.de/" target="_blank" class="wizard-btn wizard-btn-primary" id="faucetLink" onclick="window.markStepDone(1)" style="pointer-events:none; opacity:0.5;">🚰 Open Faucet</a>
+      </div>
+      <div class="wizard-step hidden" id="wizardStep2">
+        <div class="wizard-step-header"><div class="wizard-step-title">Step 3: Bridge to Base Sepolia</div><div class="wizard-step-status" id="step2Status">Pending</div></div>
+        <p>Bridge your Sepolia ETH to Base Sepolia network using Superbridge.</p>
+        <a href="https://testnets.superbridge.app/base-sepolia" target="_blank" class="wizard-btn wizard-btn-primary" id="bridgeLink" onclick="window.markStepDone(2)" style="pointer-events:none; opacity:0.5;"> Open Bridge</a>
+      </div>
+      <div class="wizard-step hidden" id="wizardStep3">
+        <div class="wizard-step-header"><div class="wizard-step-title">Step 4: Verify Balance</div><div class="wizard-step-status" id="step3Status">Pending</div></div>
+        <p>Check if you have ETH on Base Sepolia. This updates automatically every 5 seconds.</p>
+        <button class="wizard-btn wizard-btn-check" onclick="window.checkWizardBalance()">🔄 Check Balance Now</button>
+      </div>
+      <div class="wizard-balance hidden" id="wizardBalance">Current Balance (Base Sepolia):<strong id="wizardBalanceValue">Checking...</strong></div>
+      <button id="wizardCloseBtn" class="wizard-close-btn hidden" onclick="window.closeWizard()">Close</button>
+      <div class="debug-console" id="debugConsole"></div>
+    </div>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
   <script>
-    const CONFIG = {
-      RPC_URL: "https://sepolia.base.org",
-      ROUTER_ADDRESS: "0x9bc773fDBb4C2909e287Df3dcD4166e539bA5cBc",
-      CHAIN_PARAMS: {
-        chainId: '0x14a34', // 84532
-        chainName: 'Base Sepolia',
-        nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-        rpcUrls: ['https://sepolia.base.org'],
-        blockExplorerUrls: ['https://sepolia.basescan.org']
-      },
-      ROUTER_ABI: [
-        {"inputs":[{"name":"_provider","type":"address"},{"name":"_taskHash","type":"bytes32"},{"name":"_reward","type":"uint256"}],"name":"requestExecution","outputs":[{"name":"","type":"bytes32"}],"stateMutability":"nonpayable","type":"function"},
-        {"inputs":[{"name":"_executionId","type":"bytes32"},{"name":"_attestationHash","type":"bytes32"}],"name":"submitAttestation","outputs":[],"stateMutability":"nonpayable","type":"function"},
-        {"anonymous":false,"inputs":[{"indexed":true,"name":"executionId","type":"bytes32"},{"indexed":true,"name":"client","type":"address"},{"indexed":true,"name":"provider","type":"address"},{"name":"reward","type":"uint256"},{"name":"deadline","type":"uint256"}],"name":"ExecutionRequested","type":"event"}
-      ]
-    };
-
-    const WALLETS = {
-      metamask: { name: 'MetaMask', icon: '🦊', detector: () => window.ethereum?.isMetaMask },
-      rabby: { name: 'Rabby', icon: '🐰', detector: () => window.ethereum?.isRabby || (window.ethereum?.isMetaMask && window.ethereum?.rabby?.isRabby) },
-      coinbase: { name: 'Coinbase Wallet', icon: '🔵', detector: () => window.ethereum?.isCoinbaseWallet },
-      brave: { name: 'Brave Wallet', icon: '🦁', detector: () => window.ethereum?.isBraveWallet },
-      okx: { name: 'OKX Wallet', icon: '', detector: () => window.okxwallet || window.ethereum?.isOKExWallet },
-      phantom: { name: 'Phantom', icon: '', detector: () => window.phantom?.ethereum }
-    };
-
-    let provider, signer, router, userAddress;
-    const statusEl = document.getElementById('status');
-    const resultsEl = document.getElementById('results');
-    const networkWarning = document.getElementById('networkWarning');
-    const balanceWarning = document.getElementById('balanceWarning');
-    const demoBtn = document.getElementById('demoBtn');
-
-    function showStatus(msg, type='info') {
-      statusEl.textContent = msg;
-      statusEl.className = `status ${type}`;
-      statusEl.classList.remove('hidden');
-    }
-
-    function updateStep(n, done=false) {
-      document.getElementById('step'+n).className = `step ${done?'done':'active'}`;
-    }
-
-    function copyToClipboard(elementId, e) {
-      const text = document.getElementById(elementId).textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = e.target;
-        const original = btn.textContent;
-        btn.textContent = '✅';
-        setTimeout(() => btn.textContent = original, 1500);
-      });
-    }
-
-    function generateHash() {
-      return '0x' + Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b => b.toString(16).padStart(2,'0')).join('');
-    }
-
-    function detectAndShowWallets() {
-      const walletList = document.getElementById('walletList');
-      const noWalletMsg = document.getElementById('noWalletMsg');
-      let foundWallets = [];
-
-      for (const [key, wallet] of Object.entries(WALLETS)) {
-        try {
-          if (wallet.detector()) {
-            foundWallets.push({ key, ...wallet });
+    const CONFIG={RPC_URL:"https://sepolia.base.org",ROUTER_ADDRESS:"0x9bc773fDBb4C2909e287Df3dcD4166e539bA5cBc",CHAIN_PARAMS:{chainId:'0x14a34',chainName:'Base Sepolia',nativeCurrency:{name:'ETH',symbol:'ETH',decimals:18},rpcUrls:['https://sepolia.base.org'],blockExplorerUrls:['https://sepolia.basescan.org']},SEPOLIA_PARAMS:{chainId:'0xaa36a7',chainName:'Sepolia',nativeCurrency:{name:'ETH',symbol:'ETH',decimals:18},rpcUrls:['https://rpc.sepolia.org'],blockExplorerUrls:['https://sepolia.etherscan.io']},ROUTER_ABI:[{"inputs":[{"name":"_provider","type":"address"},{"name":"_taskHash","type":"bytes32"},{"name":"_reward","type":"uint256"}],"name":"requestExecution","outputs":[{"name":"","type":"bytes32"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_executionId","type":"bytes32"},{"name":"_attestationHash","type":"bytes32"}],"name":"submitAttestation","outputs":[],"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"executionId","type":"bytes32"},{"indexed":true,"name":"client","type":"address"},{"indexed":true,"name":"provider","type":"address"},{"name":"reward","type":"uint256"},{"name":"deadline","type":"uint256"}],"name":"ExecutionRequested","type":"event"}]};
+    const WALLETS={metamask:{name:'MetaMask',icon:'',detector:()=>window.ethereum?.isMetaMask&&!window.ethereum?.isBraveWallet},rabby:{name:'Rabby',icon:'',detector:()=>window.ethereum?.isRabby||(window.ethereum?.rabby?.isRabby)},brave:{name:'Brave Wallet',icon:'🦁',detector:()=>window.ethereum?.isBraveWallet},coinbase:{name:'Coinbase Wallet',icon:'',detector:()=>window.ethereum?.isCoinbaseWallet},okx:{name:'OKX Wallet',icon:'',detector:()=>window.okxwallet||window.ethereum?.isOKExWallet},phantom:{name:'Phantom',icon:'',detector:()=>window.phantom?.ethereum||(window.ethereum?.isPhantom)}};
+    let provider,signer,router,userAddress,wizardBalanceInterval=null;
+    function $(id){return document.getElementById(id);}
+    function log(m,t='info'){const dc=$('debugConsole');if(dc){const l=document.createElement('div');l.className=`log ${t}`;l.textContent=`[${new Date().toLocaleTimeString()}] ${m}`;dc.appendChild(l);dc.scrollTop=dc.scrollHeight;}console.log(`[${t.toUpperCase()}] ${m}`);}
+    function showStatus(m,t='info'){const se=$('status');if(se){se.textContent=m;se.className=`status ${t}`;se.classList.remove('hidden');}log(m,t);}
+    function updateStep(n,d=false){const s=$('step'+n);if(s)s.className=`step ${d?'done':'active'}`;}
+    function copyToClipboard(id,e){const el=$(id);if(el&&navigator.clipboard){navigator.clipboard.writeText(el.textContent).then(()=>{const b=e.target,o=b.textContent;b.textContent='✅';setTimeout(()=>b.textContent=o,1500);});}}
+    function generateHash(){return '0x'+Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b=>b.toString(16).padStart(2,'0')).join('');}
+    function detectAndShowWallets(){log('Detecting wallets...');const wl=$('walletList'),nm=$('noWalletMsg');let fw=[];for(const[k,w]of Object.entries(WALLETS)){try{if(w.detector()){log(`✓ ${w.name}`);fw.push({k,...w});}}catch(e){log(`Err ${w.name}: ${e.message}`,'error');}}if(fw.length===0&&window.ethereum){log(' Fallback: Browser Wallet');fw.push({k:'injected',name:'Browser Wallet',icon:'🔗',detector:()=>true});}if(fw.length===0){log('❌ None','error');if(nm)nm.classList.remove('hidden');if(wl)wl.classList.add('hidden');return;}if(wl){wl.innerHTML=fw.map(w=>`<button class="wallet-btn" onclick="window.connectWallet('${w.k}')"><span style="font-size:24px">${w.icon}</span><span class="wallet-name">${w.name}</span><span class="wallet-status">Detected ✓</span></button>`).join('');wl.classList.remove('hidden');}if(nm)nm.classList.add('hidden');}
+    window.connectWallet=async function(k){log(`Connect: ${k}`);if(!window.ethereum&&!window.phantom?.ethereum){showStatus('❌ No wallet found','error');return false;}try{let p;if(k==='phantom'){p=window.phantom?.ethereum||window.ethereum;log('Phantom provider');}else if(k==='okx'&&window.okxwallet){p=window.okxwallet;log('OKX provider');}else{p=window.ethereum;log('Default provider');}provider=new ethers.providers.Web3Provider(p,"any");log('Requesting accounts...');await provider.send("eth_requestAccounts",[]);signer=provider.getSigner();userAddress=await signer.getAddress();router=new ethers.Contract(CONFIG.ROUTER_ADDRESS,CONFIG.ROUTER_ABI,signer);log(`✓ ${userAddress}`);const wl=$('walletList'),dc=$('demoCard');if(wl)wl.classList.add('hidden');if(dc)dc.classList.remove('hidden');await checkNetwork();await checkBalance();updateStep(1,true);const wn=k==='injected'?'Browser Wallet':(WALLETS[k]?.name||'Wallet');showStatus(`✅ ${wn}`,'success');return true;}catch(e){log(`❌ ${e.message}`,'error');showStatus('❌ '+e.message,'error');return false;}};
+    async function checkNetwork(){if(!provider)return false;try{const n=await provider.getNetwork();const ns=$('networkStatus'),nw=$('networkWarning');if(n.chainId!==84532){if(ns)ns.textContent=` ${n.name} (${n.chainId})`;if(nw)nw.classList.remove('hidden');return false;}else{if(ns)ns.textContent=`✅ Base Sepolia`;if(nw)nw.classList.add('hidden');return true;}}catch(e){log(`Net: ${e.message}`,'error');return false;}}
+    async function checkBalance(){if(!signer||!userAddress)return null;try{const b=await provider.getBalance(userAddress);const bw=$('balanceWarning'),db=$('demoBtn');if(b.lt(ethers.utils.parseEther("0.0005"))){if(bw)bw.classList.remove('hidden');if(db){db.disabled=true;db.textContent='🔒 No ETH';}}else{if(bw)bw.classList.add('hidden');if(db){db.disabled=false;db.textContent='🚀 Run Full Demo';}}return b;}catch(e){log(`Bal: ${e.message}`,'error');return null;}}
+    window.showWalletSelectionModal=function(){log('Wallet modal');let fw=[];for(const[k,w]of Object.entries(WALLETS)){try{if(w.detector())fw.push({k,...w});}catch(e){}}if(fw.length===0&&window.ethereum)fw.push({k:'injected',name:'Browser Wallet',icon:'🔗',detector:()=>true});if(fw.length===0){alert('No wallets found.');return;}const ov=$('wizardOverlay');if(!ov)return;ov.dataset.orig=ov.innerHTML;ov.innerHTML='';const md=document.createElement('div');md.className='wizard-modal';md.style.maxWidth='400px';md.innerHTML=`<h2> Connect Wallet</h2><p class="wizard-subtitle">Select wallet</p>`;fw.forEach(w=>{const btn=document.createElement('button');btn.className='wallet-btn';btn.style.marginBottom='10px';btn.innerHTML=`<span style="font-size:24px">${w.icon}</span><span class="wallet-name">${w.name}</span><span class="wallet-status">Detected ✓</span>`;btn.onclick=function(){window.connectWalletFromSelection(w.k);};md.appendChild(btn);});const cb=document.createElement('button');cb.className='wizard-close-btn';cb.style.marginTop='15px';cb.textContent='Cancel';cb.onclick=window.closeWalletSelectionModal;md.appendChild(cb);ov.appendChild(md);ov.classList.remove('hidden');};
+    window.connectWalletFromSelection=async function(k){log(`Selected: ${k}`);const ov=$('wizardOverlay');if(ov)ov.classList.add('hidden');const ok=await window.connectWallet(k);if(ok&&provider&&userAddress){log('Success → Wizard');setTimeout(()=>window.showFaucetWizard(),300);}else{log('Failed','error');}};
+    window.closeWalletSelectionModal=function(){log('Cancelled');const ov=$('wizardOverlay');if(ov){if(ov.dataset.orig)ov.innerHTML=ov.dataset.orig;ov.classList.add('hidden');}};
+    window.connectWalletFromWizard=function(){window.showWalletSelectionModal();};
+    window.showFaucetWizard=function(){
+      log('Wizard open');
+      const ov=$('wizardOverlay');
+      if(!ov)return;
+      if(ov.dataset.orig)ov.innerHTML=ov.dataset.orig;
+      ov.classList.remove('hidden');
+      window.resetWizardSteps();
+      if(provider&&userAddress){
+        $('wizardConnectSection')?.classList.add('hidden');
+        $('wizardStep0')?.classList.remove('hidden');
+        $('wizardStep0')?.classList.add('active');
+        $('wizardBalance')?.classList.remove('hidden');
+        $('wizardCloseBtn')?.classList.remove('hidden');
+        // Auto-check balance & skip to demo if ready
+        checkBalance().then(bal=>{
+          if(bal&&bal.gte(ethers.utils.parseEther("0.0005"))){
+            window.markStepDone(3);
+            $('wizardBalanceValue').textContent=parseFloat(ethers.utils.formatEther(bal)).toFixed(4)+' ETH';
+            const cb=$('wizardCloseBtn');
+            if(cb){cb.className='wizard-close-btn ready';cb.textContent='🚀 Start Demo';cb.onclick=()=>{window.closeWizard();$('demoBtn')?.click();};}
+            $('faucetLink').style.pointerEvents='none';$('faucetLink').style.opacity='0.5';
+            $('bridgeLink').style.pointerEvents='none';$('bridgeLink').style.opacity='0.5';
           }
-        } catch(e) {
-          console.log(`Error detecting ${wallet.name}:`, e);
-        }
-      }
-
-      if (foundWallets.length === 0) {
-        noWalletMsg.classList.remove('hidden');
-        return;
-      }
-
-      walletList.innerHTML = foundWallets.map(w => `
-        <button class="wallet-btn" onclick="connectWallet('${w.key}')">
-          <span style="font-size: 24px;">${w.icon}</span>
-          <span class="wallet-name">${w.name}</span>
-          <span class="wallet-status">Detected ✓</span>
-        </button>
-      `).join('');
-    }
-
-    window.connectWallet = async (walletKey) => {
-      if (!window.ethereum) {
-        return showStatus('❌ No wallet detected. Please refresh after installing.', 'error');
-      }
-
-      try {
-        if (walletKey === 'phantom' && window.phantom?.ethereum) {
-          provider = new ethers.providers.Web3Provider(window.phantom.ethereum, "any");
-        } else if (walletKey === 'okx' && window.okxwallet) {
-          provider = new ethers.providers.Web3Provider(window.okxwallet, "any");
-        } else {
-          provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-        }
-
-        await provider.send("eth_requestAccounts", []);
-        signer = provider.getSigner();
-        userAddress = await signer.getAddress();
-        router = new ethers.Contract(CONFIG.ROUTER_ADDRESS, CONFIG.ROUTER_ABI, signer);
-
-        document.getElementById('walletList').classList.add('hidden');
-        document.getElementById('demoCard').classList.remove('hidden');
-
-        await checkNetwork();
-        await checkBalance();
-        updateStep(1, true);
-        showStatus(`✅ Connected to ${WALLETS[walletKey].name}!`, 'success');
-      } catch(e) {
-        showStatus('❌ Connection error: ' + (e.reason || e.message || e), 'error');
+        });
+        window.startWizardBalanceCheck();
+      }else{
+        $('wizardConnectSection')?.classList.remove('hidden');
+        for(let i=0;i<=3;i++){const s=$('wizardStep'+i);if(s)s.classList.add('hidden');}
+        $('wizardBalance')?.classList.add('hidden');$('wizardCloseBtn')?.classList.add('hidden');
       }
     };
-
-    async function checkNetwork() {
-      if (!provider) return false;
-      try {
-        const network = await provider.getNetwork();
-        if (network.chainId !== 84532) {
-          document.getElementById('networkStatus').textContent = `⚠️ Network: ${network.name} (Chain ID: ${network.chainId})`;
-          networkWarning.classList.remove('hidden');
-          return false;
-        } else {
-          document.getElementById('networkStatus').textContent = `✅ Base Sepolia (Chain ID: 84532)`;
-          networkWarning.classList.add('hidden');
-          return true;
-        }
-      } catch(e) { return false; }
-    }
-
-    async function checkBalance() {
-      if (!signer || !userAddress) return;
-      try {
-        const balance = await provider.getBalance(userAddress);
-        if (balance.lt(ethers.utils.parseEther("0.0005"))) {
-          balanceWarning.classList.remove('hidden');
-          const faucetUrl = `https://www.alchemy.com/faucets/base-sepolia`;
-          document.getElementById('faucetLink').href = faucetUrl;
-          demoBtn.disabled = true;
-          demoBtn.textContent = '🔒 No ETH';
-        } else {
-          balanceWarning.classList.add('hidden');
-          demoBtn.disabled = false;
-          demoBtn.textContent = '🚀 Run Full Demo';
-        }
-      } catch(e) {}
-    }
-
-    document.getElementById('switchBtn').onclick = async () => {
-      try {
-        await provider.send("wallet_switchEthereumChain", [{ chainId: CONFIG.CHAIN_PARAMS.chainId }]);
-      } catch (switchError) {
-        if (switchError.code === 4902) {
-          await provider.send("wallet_addEthereumChain", [CONFIG.CHAIN_PARAMS]);
-        } else {
-          throw switchError;
-        }
-      }
-      await checkNetwork();
-      await checkBalance();
+    window.closeWizard=function(){log('Wizard closed');const ov=$('wizardOverlay');if(ov)ov.classList.add('hidden');window.stopWizardBalanceCheck();};
+    window.resetWizardSteps=function(){for(let i=0;i<=3;i++){const s=$('wizardStep'+i);if(s)s.className='wizard-step hidden';const st=$('step'+i+'Status');if(st)st.textContent='Pending';}const f=$('faucetLink'),b=$('bridgeLink');if(f){f.style.pointerEvents='none';f.style.opacity='0.5';}if(b){b.style.pointerEvents='none';b.style.opacity='0.5';}};
+    window.markStepDone=function(n){const ws=$('wizardStep'+n),st=$('step'+n+'Status');if(ws)ws.className='wizard-step done';if(st)st.textContent='✓ Done';if(n<3){const ns=$('wizardStep'+(n+1));if(ns){ns.classList.remove('hidden');ns.classList.add('active');}}};
+    window.addNetworks=async function(){const b=$('addNetworksBtn');if(!b)return;b.disabled=true;b.textContent=' Adding...';try{try{await provider.send("wallet_addEthereumChain",[CONFIG.SEPOLIA_PARAMS]);log('Sepolia added');}catch(e){if(e.code!==4902)throw e;log('Sepolia exists');}try{await provider.send("wallet_addEthereumChain",[CONFIG.CHAIN_PARAMS]);log('Base added');}catch(e){if(e.code!==4902)throw e;log('Base exists');}window.markStepDone(0);const f=$('faucetLink');if(f){f.style.pointerEvents='auto';f.style.opacity='1';}b.textContent='✅ Networks Added';b.style.background='#10b981';}catch(e){log(`NetErr: ${e.message}`,'error');showStatus('❌ '+e.message,'error');if(b){b.disabled=false;b.textContent='🔧 Add Networks';}}};
+    window.startWizardBalanceCheck=function(){window.stopWizardBalanceCheck();window.checkWizardBalance();wizardBalanceInterval=setInterval(window.checkWizardBalance,5000);};
+    window.stopWizardBalanceCheck=function(){if(wizardBalanceInterval){clearInterval(wizardBalanceInterval);wizardBalanceInterval=null;}};
+    window.checkWizardBalance=async function(){if(!provider||!userAddress)return;try{const b=await provider.getBalance(userAddress);const eb=ethers.utils.formatEther(b);const be=$('wizardBalanceValue'),bb=$('wizardBalance'),cb=$('wizardCloseBtn');if(be)be.textContent=parseFloat(eb).toFixed(4)+' ETH';if(b.gte(ethers.utils.parseEther("0.0005"))){if(bb)bb.className='wizard-balance ready';if(cb){cb.className='wizard-close-btn ready';cb.textContent='🚀 Start Demo';cb.onclick=function(){window.closeWizard();$('demoBtn')?.click();};}const bl=$('bridgeLink');if(bl){bl.style.pointerEvents='auto';bl.style.opacity='1';}window.markStepDone(3);}else{if(bb)bb.className='wizard-balance';if(cb){cb.className='wizard-close-btn';cb.textContent='Close';cb.onclick=window.closeWizard;}}}catch(e){log(`WizBal: ${e.message}`,'error');}};
+    const owb=$('openWizardBtn');if(owb)owb.onclick=window.showFaucetWizard;
+    const swb=$('switchBtn');if(swb)swb.onclick=async function(){try{await provider.send("wallet_switchEthereumChain",[{chainId:CONFIG.CHAIN_PARAMS.chainId}]);}catch(e){if(e.code===4902)await provider.send("wallet_addEthereumChain",[CONFIG.CHAIN_PARAMS]);else throw e;}await checkNetwork();await checkBalance();};
+    const db=$('demoBtn');if(db)db.onclick=async function(){
+      log('Demo button clicked');
+      const b=$('demoBtn');if(!b)return;
+      b.disabled=true;b.textContent=' Processing...';
+      try{
+        if(!(await checkNetwork()))throw new Error("Switch to Base Sepolia!");
+        const bal=await checkBalance();
+        if(!bal||bal.lt(ethers.utils.parseEther("0.0005")))throw new Error("Insufficient ETH. Get test funds first.");
+        updateStep(2,true);showStatus('🔄 Creating task...');
+        const th=generateHash(),rw=ethers.utils.parseEther("1");
+        const tx1=await router.requestExecution(userAddress,th,rw);
+        showStatus(' Confirming...');const r1=await tx1.wait();
+        showStatus(' Parsing...');
+        const ev=r1.events?.find(e=>e.event==='ExecutionRequested');
+        if(!ev)throw new Error('Event missing');
+        const eid=ev.args.executionId;
+        const eidEl=$('execIdDisplay'),tx1El=$('tx1Display');
+        if(eidEl)eidEl.textContent=eid;if(tx1El)tx1El.textContent=r1.transactionHash;
+        const re=$('results');if(re)re.classList.remove('hidden');
+        showStatus('🤖 Simulating...');await new Promise(res=>setTimeout(res,3000));
+        updateStep(3,true);showStatus(' Attesting...');
+        const ah=generateHash(),tx2=await router.submitAttestation(eid,ah);
+        const r2=await tx2.wait();const tx2El=$('tx2Display');
+        if(tx2El)tx2El.textContent=r2.transactionHash;
+        showStatus('✅ DEMO COMPLETE!','success');b.textContent='🔄 Run Again';
+      }catch(e){showStatus('❌ '+e.message,'error');if(b)b.textContent='🚀 Run Full Demo';}
+      finally{if(b)b.disabled=false;await checkBalance();}
     };
-
-    document.getElementById('demoBtn').onclick = async () => {
-      const btn = document.getElementById('demoBtn');
-      btn.disabled = true;
-      btn.textContent = '⏳ Processing...';
-
-      try {
-        if (!(await checkNetwork())) throw new Error("Switch to Base Sepolia first!");
-
-        updateStep(2, true);
-        showStatus('🔄 Creating task... Approve transaction in wallet.');
-
-        const taskHash = generateHash();
-        const reward = ethers.utils.parseEther("1");
-
-        const tx1 = await router.requestExecution(userAddress, taskHash, reward);
-        showStatus(' Waiting for block confirmation...');
-        const receipt1 = await tx1.wait();
-
-        showStatus('🔍 Processing executionId...');
-        const event = receipt1.events?.find(e => e.event === 'ExecutionRequested');
-        if (!event) throw new Error('ExecutionRequested event not found');
-        const executionId = event.args.executionId;
-
-        document.getElementById('execIdDisplay').textContent = executionId;
-        document.getElementById('tx1Display').textContent = receipt1.transactionHash;
-        resultsEl.classList.remove('hidden');
-
-        showStatus('🤖 Simulating AI work (3 seconds)...');
-        await new Promise(r => setTimeout(r, 3000));
-
-        updateStep(3, true);
-        showStatus('📤 Submitting attestation... Approve second transaction.');
-
-        const attestationHash = generateHash();
-        const tx2 = await router.submitAttestation(executionId, attestationHash);
-        const receipt2 = await tx2.wait();
-
-        document.getElementById('tx2Display').textContent = receipt2.transactionHash;
-
-        showStatus('✅ DEMO COMPLETE!\n\n🎉 You executed the full Noema AI cycle!', 'success');
-        btn.textContent = '🔄 Run Again';
-
-      } catch(e) {
-        showStatus('❌ Error: ' + (e.reason || e.message || e), 'error');
-        btn.textContent = '🚀 Run Full Demo';
-      } finally {
-        btn.disabled = false;
-        await checkBalance();
-      }
-    };
-
-    if (window.ethereum) {
-      window.ethereum.on('accountsChanged', () => location.reload());
-      window.ethereum.on('chainChanged', () => location.reload());
-    }
-
-    window.addEventListener('load', detectAndShowWallets);
+    if(window.ethereum){window.ethereum.on('accountsChanged',()=>location.reload());window.ethereum.on('chainChanged',()=>location.reload());}
+    window.addEventListener('load',detectAndShowWallets);
   </script>
 </body>
 </html>
